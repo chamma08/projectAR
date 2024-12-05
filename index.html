@@ -6,36 +6,43 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, user-scalable=no"
     />
-    <title>AR Chair Placement</title>
+    <link rel="stylesheet" href="https://cdn.tailwindcss.com" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css"
+    />
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-    <script type="module" src="app.js"></script>
+    <title>AR Engine</title>
     <style>
-      html,
-      body {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        overflow: hidden;
-      }
       #ar-button {
         position: fixed;
         bottom: 20px;
         left: 50%;
         transform: translateX(-50%);
-        padding: 10px 20px;
         background: blue;
         color: white;
+        padding: 10px 20px;
         font-size: 16px;
-        border-radius: 10px;
         border: none;
+        border-radius: 5px;
         display: none;
         cursor: pointer;
       }
     </style>
   </head>
-  <body>
-    <!-- MindAR Scene -->
+
+  <body class="bg-white text-gray-900">
+    <!-- Navbar -->
+    <header class="flex justify-between items-center p-4 shadow-md bg-white">
+      <div class="flex items-center space-x-2">
+        <h1 class="text-xl font-bold">
+          ARen<span class="text-blue-600">Gine</span>
+        </h1>
+      </div>
+    </header>
+
+    <!-- MindAR Scene for Image Tracking -->
     <a-scene
       mindar-image="imageTargetSrc: ./targets.mind;"
       embedded
@@ -46,6 +53,29 @@
     </a-scene>
 
     <!-- AR Button -->
-    <button id="ar-button" onclick="app.startAR()">Start AR</button>
+    <button id="ar-button" onclick="window.app.initAR();">
+      Open AR Placement
+    </button>
+
+    <script type="module">
+      import { App } from "./app.js";
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const app = new App();
+        window.app = app;
+
+        // Show button on image detection
+        const scene = document.querySelector("a-scene");
+        const arButton = document.getElementById("ar-button");
+
+        scene.addEventListener("targetFound", () => {
+          arButton.style.display = "block";
+        });
+
+        scene.addEventListener("targetLost", () => {
+          arButton.style.display = "none";
+        });
+      });
+    </script>
   </body>
 </html>
