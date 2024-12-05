@@ -166,7 +166,7 @@ class App {
         self.chair = gltf.scene;
 
         // Scale the model
-        self.chair.scale.set(1.2, 1.2, 1.2);
+        self.chair.scale.set(5, 5, 5);
 
         self.chair.visible = false;
 
