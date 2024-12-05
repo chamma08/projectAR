@@ -1,88 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, user-scalable=no"
-    />
-    <link rel="stylesheet" href="https://cdn.tailwindcss.com" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css"
-    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AR Navigation Example</title>
+    <!-- Include A-Frame and MindAR -->
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-    <title>AR Engine</title>
     <style>
-      #ar-button {
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: blue;
-        color: white;
-        padding: 10px 20px;
-        font-size: 16px;
-        border: none;
-        border-radius: 5px;
-        display: none;
-        cursor: pointer;
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      a-scene {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
       }
     </style>
   </head>
-
-  <body class="bg-white text-gray-900">
-    <!-- Navbar -->
-    <header class="flex justify-between items-center p-4 shadow-md bg-white">
-      <div class="flex items-center space-x-2">
-        <h1 class="text-xl font-bold">
-          ARen<span class="text-blue-600">Gine</span>
-        </h1>
-      </div>
-    </header>
-
-    <!-- MindAR Scene for Image Tracking -->
+  <body>
+    <!-- Scene for the first .mind file -->
     <a-scene
-      mindar-image="imageTargetSrc: ./targets.mind;"
-      embedded
+      mindar-image="imageTargetSrc: ./targets.mind; autoStart: true; showStats: false;"
       color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights"
+      embedded
       vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: false"
+      device-orientation-permission-ui="enabled: true"
     >
-      <a-camera position="0 0 0"></a-camera>
+      <a-assets>
+        <a-asset-item id="model1" src="./models/ELE.glb"></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <!-- This entity listens for the targetFound event -->
+      <a-entity mindar-image-target="targetIndex: 0" id="target1"></a-entity>
     </a-scene>
 
-    <!-- AR Button -->
-    <button
-      id="ar-button"
-      class="bg-blue-500 text-white py-2 w-full font-medium hover:bg-blue-600 transition"
-      onclick="window.app.showChair(1);"
-      style="display: none"
-    >
-      <i class="fas fa-camera"></i> View in AR
-    </button>
+    <script>
+      // JavaScript to handle navigation
+      document.addEventListener("DOMContentLoaded", () => {
+        // Get the target entity
+        const target1 = document.getElementById("target1");
 
-    <script type="module">
-      import { App } from "./app.js";
+        // Listen for targetFound event
+        target1.addEventListener("targetFound", () => {
+          console.log("Target 1 found! Navigating to page...");
+          window.location.href = "model.html"; // Replace with your desired URL
+        });
 
-      document.addEventListener("DOMContentLoaded", function () {
-        const app = new App();
-        window.app = app;
-
-        document.addEventListener("DOMContentLoaded", () => {
-          const scene = document.querySelector("a-scene");
-          const arButton = document.getElementById("ar-button");
-
-          scene.addEventListener("targetFound", () => {
-            console.log("Target Found!");
-            arButton.style.display = "block"; // Ensure button is shown
-          });
-
-          scene.addEventListener("targetLost", () => {
-            console.log("Target Lost!");
-            arButton.style.display = "none"; // Ensure button hides
-          });
+        // Optional: Listen for targetLost event
+        target1.addEventListener("targetLost", () => {
+          console.log("Target 1 lost!");
         });
       });
     </script>

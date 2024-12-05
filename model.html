@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <!-- Favicon -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="../../css/favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="../../css/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="../../css/favicon/favicon-16x16.png"
+    />
+    <link rel="manifest" href="../../css/favicon/site.webmanifest" />
+    <link
+      rel="mask-icon"
+      href="../../css/favicon/safari-pinned-tab.svg"
+      color="#5bbad5"
+    />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="theme-color" content="#ffffff" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css"
+    />
+    <title>AR Engine</title>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+  </head>
+
+  <body class="bg-white text-gray-900">
+    <!-- Navbar -->
+    <header class="flex justify-between items-center p-4 shadow-md bg-white">
+      <div class="flex items-center space-x-2">
+        <h1 class="text-xl font-bold">
+          ARen<span class="text-blue-600">Gine</span>
+        </h1>
+      </div>
+      <div class="space-x-4">
+        <button
+          class="p-2 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition"
+        >
+          <i class="bx bx-camera"></i>
+        </button>
+        <button
+          class="p-2 bg-gray-200 rounded-full shadow-lg hover:bg-gray-300 transition"
+        >
+          <i class="bx bx-menu"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="text-center px-4 py-12">
+      <h2 class="text-3xl font-bold mb-4">
+        Future of interactive technology with our AR Engine
+      </h2>
+      <p class="text-gray-600 mb-6">
+        Welcome to the future of interactive technology with our AR Engine
+        Experience website. This platform is designed to provide users with an
+        immersive and educational journey into the world of augmented reality
+        (AR) and engine mechanics.
+      </p>
+      <button
+        class="bg-blue-500 text-white py-2 px-6 rounded-full font-medium shadow-lg hover:bg-blue-600 transition"
+      >
+        Get Started
+      </button>
+    </section>
+
+    <!-- AR Models Section -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-8 px-4 py-12">
+      <div class="bg-white shadow-md rounded-lg overflow-hidden">
+        <img
+          src="../../assets/ar-shop/en2.jpeg"
+          alt="AR Model 1"
+          class="w-full h-48 object-cover"
+        />
+        <div class="p-4">
+          <h3 class="text-lg font-bold">Model 1</h3>
+        </div>
+        <button
+          class="bg-blue-500 text-white py-2 w-full font-medium hover:bg-blue-600 transition"
+          onclick="window.app.showChair(1);"
+        >
+          <i class="fas fa-camera"></i> View in AR
+        </button>
+      </div>
+    </section>
+
+    <script src="../../libs/fas.js"></script>
+    <script type="module">
+      import { App } from "./app.js";
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const app = new App();
+        window.app = app;
+      });
+    </script>
+  </body>
+</html>
