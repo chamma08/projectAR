@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AR Image to Model</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <title>AR Chair Placement</title>
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-    <script src="app.js" type="module"></script>
+    <script type="module" src="app.js"></script>
     <style>
       html,
       body {
@@ -15,29 +18,19 @@
         height: 100%;
         overflow: hidden;
       }
-      a-scene {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-      }
-      canvas {
-        display: block;
-      }
-      #model-ui {
-        display: none;
+      #ar-button {
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.8);
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 10px 20px;
+        background: blue;
         color: white;
-        z-index: 10;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
+        font-size: 16px;
+        border-radius: 10px;
+        border: none;
+        display: none;
+        cursor: pointer;
       }
     </style>
   </head>
@@ -48,19 +41,14 @@
       embedded
       color-space="sRGB"
       vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: false"
-    >
+      device-orientation-permission-ui="enabled: false">
       <a-camera position="0 0 0"></a-camera>
       <a-entity mindar-image-target="targetIndex: 0" id="marker">
-        <a-box position="0 0 0" material="color: red;"></a-box>
+        <a-box position="0 0.5 0" material="color: red;"></a-box>
       </a-entity>
     </a-scene>
 
-    <!-- AR Model Placement UI -->
-    <div id="model-ui">
-      <h1>Place Your Model</h1>
-      <button onclick="app.showChair()">Place Chair</button>
-      <button onclick="app.exitAR()">Exit AR</button>
-    </div>
+    <!-- AR Button -->
+    <button id="ar-button" onclick="app.startAR()">Start AR</button>
   </body>
 </html>
