@@ -94,9 +94,11 @@ class App {
       const session = this.renderer.xr.getSession();
       if (!this.hitTestSourceRequested) {
         session.requestReferenceSpace("viewer").then((referenceSpace) => {
-          session.requestHitTestSource({ space: referenceSpace }).then((source) => {
-            this.hitTestSource = source;
-          });
+          session
+            .requestHitTestSource({ space: referenceSpace })
+            .then((source) => {
+              this.hitTestSource = source;
+            });
         });
 
         session.addEventListener("end", () => {
@@ -125,16 +127,18 @@ class App {
   }
 
   start() {
+    console.log("Starting AR session");
     this.renderer.setAnimationLoop(this.render.bind(this));
   }
 
   stop() {
+    console.log("Stopping AR session");
     this.renderer.setAnimationLoop(null);
   }
 
   showChair() {
     this.loadChair();
-    document.getElementById("model-ui").style.display = "block";
+    document.getElementById("model-ui").style.display = "flex";
     this.start();
   }
 

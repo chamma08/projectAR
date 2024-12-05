@@ -1,38 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AR Image Tracking to Model Placement</title>
-  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-  <script src="app.js" type="module"></script>
-  <style>
-    body { margin: 0; overflow: hidden; }
-    
-  </style>
-</head>
-<body>
-  <!-- MindAR Image Tracking -->
-  <a-scene
-    mindar-image="imageTargetSrc: ./targets.mind;"
-    embedded
-    color-space="sRGB"
-    vr-mode-ui="enabled: false"
-    device-orientation-permission-ui="enabled: false">
-    <a-camera position="0 0 0"></a-camera>
-    <a-entity
-      id="placeholder"
-      position="0 0 0"
-      geometry="primitive: box; height: 0.5; width: 0.5; depth: 0.5;"
-      material="color: red;"
-      visible="false"></a-entity>
-  </a-scene>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AR Image to Model</title>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <script src="app.js" type="module"></script>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+      }
+      a-scene {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+      }
+      canvas {
+        display: block;
+      }
+      #model-ui {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        z-index: 10;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- MindAR Scene -->
+    <a-scene
+      mindar-image="imageTargetSrc: ./targets.mind;"
+      embedded
+      color-space="sRGB"
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: false"
+    >
+      <a-camera position="0 0 0"></a-camera>
+      <a-entity mindar-image-target="targetIndex: 0" id="marker">
+        <a-box position="0 0 0" material="color: red;"></a-box>
+      </a-entity>
+    </a-scene>
 
-  <!-- AR Model Placement -->
-  <div id="model-ui">
-    <button onclick="app.showChair(1)">Place Chair</button>
-    <button onclick="app.exitAR()">Exit</button>
-  </div>
-</body>
+    <!-- AR Model Placement UI -->
+    <div id="model-ui">
+      <h1>Place Your Model</h1>
+      <button onclick="app.showChair()">Place Chair</button>
+      <button onclick="app.exitAR()">Exit AR</button>
+    </div>
+  </body>
 </html>
