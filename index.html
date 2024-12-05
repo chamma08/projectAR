@@ -95,55 +95,15 @@
         </div>
         <button
           class="bg-blue-500 text-white py-2 w-full font-medium hover:bg-blue-600 transition"
-          onclick="window.app.showChair(1);"
+          onclick="window.app.showChair();"
         >
           <i class="fas fa-camera"></i> View in AR
         </button>
       </div>
-      <div class="bg-white shadow-md rounded-lg overflow-hidden">
-        <img
-          src="../../assets/ar-shop/en.jpeg"
-          alt="AR Model 2"
-          class="w-full h-48 object-cover"
-        />
-        <div class="p-4">
-          <h3 class="text-lg font-bold">Model 2</h3>
-        </div>
-        <button
-          class="bg-blue-500 text-white py-2 w-full font-medium hover:bg-blue-600 transition"
-          onclick="window.app.showChair(2);"
-        >
-          <i class="fas fa-camera"></i> View in AR
-        </button>
-      </div>
+      
     </section>
 
-    <!-- AR Placement Section -->
-    <section id="ar-section">
-      <a-scene
-        mindar-image="imageTargetSrc: ./targets.mind; autoStart: true;"
-        embedded
-        color-space="sRGB"
-        vr-mode-ui="enabled: false"
-        gesture-detector
-      >
-        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-
-        <!-- Target -->
-        <a-entity mindar-image-target="targetIndex: 0">
-          <a-box id="detectedModel" position="0 0 0" color="blue"></a-box>
-        </a-entity>
-      </a-scene>
-
-      <!-- Place Model Button -->
-      <button
-        id="place-button"
-        class="hidden bg-green-500 text-white py-2 px-6 rounded-full font-medium shadow-lg hover:bg-green-600 transition"
-        style="position: fixed; bottom: 10%; left: 50%; transform: translateX(-50%);"
-      >
-        Place Model
-      </button>
-    </section>
+    
 
     <script src="../../libs/fas.js"></script>
     <script type="module">

@@ -131,7 +131,7 @@ class App {
     );
   }
 
-  showChair(id) {
+  showChair() {
     this.initAR();
 
     const loader = new GLTFLoader().setPath(this.assetsPath);
@@ -140,7 +140,7 @@ class App {
     this.loadingBar.visible = true;
 
     loader.load(
-      `en${id}.glb`,
+      "ELE.glb", 
       function (gltf) {
         self.scene.add(gltf.scene);
         self.chair = gltf.scene;
