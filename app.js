@@ -94,6 +94,26 @@ class App {
       if (self.reticle.visible) {
         self.chair.position.setFromMatrixPosition(self.reticle.matrix);
         self.chair.visible = true;
+
+        // Play the soundtrack
+        if (!self.audio) {
+          const listener = new THREE.AudioListener();
+          self.camera.add(listener);
+
+          const sound = new THREE.Audio(listener);
+          const audioLoader = new THREE.AudioLoader();
+
+          audioLoader.load("../../assets/audio/esound.wav", function (buffer) {
+            sound.setBuffer(buffer);
+            sound.setLoop(false);
+            sound.setVolume(0.5);
+            sound.play();
+          });
+
+          self.audio = sound;
+        } else {
+          self.audio.play();
+        }
       }
     }
 
@@ -144,6 +164,9 @@ class App {
       function (gltf) {
         self.scene.add(gltf.scene);
         self.chair = gltf.scene;
+
+        // Scale the model
+        self.chair.scale.set(1.2, 1.2, 1.2);
 
         self.chair.visible = false;
 
