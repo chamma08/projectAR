@@ -76,7 +76,7 @@ class App {
 
   loadChair() {
     const loader = new GLTFLoader().setPath(this.assetsPath);
-    loader.load("chair.glb", (gltf) => {
+    loader.load("ELE.glb", (gltf) => {
       this.chair = gltf.scene;
       this.chair.visible = false;
       this.scene.add(this.chair);
