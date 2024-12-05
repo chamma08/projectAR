@@ -48,7 +48,8 @@
       embedded
       color-space="sRGB"
       vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: false">
+      device-orientation-permission-ui="enabled: false"
+    >
       <a-camera position="0 0 0"></a-camera>
     </a-scene>
 
@@ -64,16 +65,19 @@
         const app = new App();
         window.app = app;
 
-        // Show button on image detection
-        const scene = document.querySelector("a-scene");
-        const arButton = document.getElementById("ar-button");
+        document.addEventListener("DOMContentLoaded", () => {
+          const scene = document.querySelector("a-scene");
+          const arButton = document.getElementById("ar-button");
 
-        scene.addEventListener("targetFound", () => {
-          arButton.style.display = "block";
-        });
+          scene.addEventListener("targetFound", () => {
+            console.log("Target Found!");
+            arButton.style.display = "block"; // Ensure button is shown
+          });
 
-        scene.addEventListener("targetLost", () => {
-          arButton.style.display = "none";
+          scene.addEventListener("targetLost", () => {
+            console.log("Target Lost!");
+            arButton.style.display = "none"; // Ensure button hides
+          });
         });
       });
     </script>
