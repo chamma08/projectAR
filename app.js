@@ -1,13 +1,12 @@
 import * as THREE from "../../libs/three125/three.module.js";
 import { GLTFLoader } from "../../libs/three/jsm/GLTFLoader.js";
-import { RGBELoader } from "../../libs/three/jsm/RGBELoader.js";
 
 class App {
   constructor() {
     this.assetsPath = "../../assets/ar-shop/";
     this.chair = null;
 
-    // MindAR Event Binding
+    // Bind MindAR Events
     document.querySelector("a-scene").addEventListener("targetFound", () => {
       console.log("Image detected!");
       document.getElementById("ar-button").style.display = "block";
@@ -25,7 +24,7 @@ class App {
   }
 
   initAR() {
-    // Create Three.js renderer and camera
+    // Create Three.js Renderer
     const container = document.createElement("div");
     document.body.appendChild(container);
 
@@ -55,7 +54,7 @@ class App {
     const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
     this.scene.add(light);
 
-    // Set up AR session
+    // AR Session Setup
     this.renderer.xr.enabled = true;
     navigator.xr.requestSession("immersive-ar", { requiredFeatures: ["hit-test"] }).then((session) => {
       this.renderer.xr.setSession(session);
@@ -70,26 +69,8 @@ class App {
         }
       });
 
-      session.addEventListener("end", () => {
-        console.log("AR session ended");
-      });
-
-      this.setupHitTest(session);
       this.loadChair();
       this.renderer.setAnimationLoop(this.render.bind(this));
-    });
-  }
-
-  setupHitTest(session) {
-    const viewerSpace = session.requestReferenceSpace("viewer");
-    session
-      .requestHitTestSource({ space: viewerSpace })
-      .then((source) => {
-        this.hitTestSource = source;
-      });
-
-    session.addEventListener("end", () => {
-      this.hitTestSource = null;
     });
   }
 
@@ -103,12 +84,12 @@ class App {
   }
 
   render(timestamp, frame) {
-    if (this.hitTestSource && frame) {
-      const hitTestResults = frame.getHitTestResults(this.hitTestSource);
+    const session = this.renderer.xr.getSession();
+    if (session && frame) {
+      const hitTestResults = frame.getHitTestResults(this.reticle);
       if (hitTestResults.length > 0) {
         const hit = hitTestResults[0];
-        const referenceSpace = this.renderer.xr.getReferenceSpace();
-        const pose = hit.getPose(referenceSpace);
+        const pose = hit.getPose(this.renderer.xr.getReferenceSpace());
         this.reticle.matrix.fromArray(pose.transform.matrix);
         this.reticle.visible = true;
       } else {
