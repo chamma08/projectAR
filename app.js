@@ -14,6 +14,7 @@ class App {
     this.loadingBar.visible = false;
 
     this.assetsPath = "../../assets/ar-shop/";
+    this.audioPath = "../../assets/audio/";
 
     this.camera = new THREE.PerspectiveCamera(
       70,
@@ -52,11 +53,11 @@ class App {
     this.controls.minPolarAngle = Math.PI / 4;
     this.controls.maxPolarAngle = Math.PI / 2;
 
+    this.models = {}; // To store model and sound data
     this.setupXR();
 
     window.addEventListener("resize", this.resize.bind(this));
 
-    // Touch event listeners
     this.renderer.domElement.addEventListener(
       "touchstart",
       this.onTouchStart.bind(this),
@@ -89,37 +90,21 @@ class App {
     this.hitTestSource = null;
 
     function onSelect() {
-      if (self.chair === undefined) return;
+      if (!self.reticle.visible || !self.selectedModel) return;
 
-      if (self.reticle.visible) {
-        self.chair.position.setFromMatrixPosition(self.reticle.matrix);
-        self.chair.visible = true;
+      const { model, sound } = self.models[self.selectedModel];
+      model.position.setFromMatrixPosition(self.reticle.matrix);
+      model.visible = true;
 
-        // Play the soundtrack
-        if (!self.audio) {
-          const listener = new THREE.AudioListener();
-          self.camera.add(listener);
-
-          const sound = new THREE.Audio(listener);
-          const audioLoader = new THREE.AudioLoader();
-
-          audioLoader.load("../../assets/audio/esound.wav", function (buffer) {
-            sound.setBuffer(buffer);
-            sound.setLoop(false);
-            sound.setVolume(0.5);
-            sound.play();
-          });
-
-          self.audio = sound;
-        } else {
-          self.audio.play();
-        }
+      // Play the corresponding sound
+      if (sound.isPlaying) {
+        sound.stop();
       }
+      sound.play();
     }
 
     this.controller = this.renderer.xr.getController(0);
     this.controller.addEventListener("select", onSelect);
-
     this.scene.add(this.controller);
   }
 
@@ -134,15 +119,12 @@ class App {
     const pmremGenerator = new THREE.PMREMGenerator(this.renderer);
     pmremGenerator.compileEquirectangularShader();
 
-    const self = this;
-
     loader.load(
       "../../assets/hdr/venice_sunset_1k.hdr",
       (texture) => {
         const envMap = pmremGenerator.fromEquirectangular(texture).texture;
         pmremGenerator.dispose();
-
-        self.scene.environment = envMap;
+        this.scene.environment = envMap;
       },
       undefined,
       (err) => {
@@ -151,9 +133,7 @@ class App {
     );
   }
 
-  showChair(id) {
-    this.initAR();
-
+  loadModel(id) {
     const loader = new GLTFLoader().setPath(this.assetsPath);
     const self = this;
 
@@ -161,21 +141,20 @@ class App {
 
     loader.load(
       `ELE${id}.glb`,
-      function (gltf) {
-        self.scene.add(gltf.scene);
-        self.chair = gltf.scene;
+      (gltf) => {
+        const model = gltf.scene;
+        self.scene.add(model);
 
-        // Scale the model
-        self.chair.scale.set(5, 5, 5);
-
-        self.chair.visible = false;
+        model.scale.set(5, 5, 5);
+        model.visible = false;
 
         // Set up animation
         if (gltf.animations && gltf.animations.length > 0) {
-          self.mixer = new THREE.AnimationMixer(gltf.scene);
-          gltf.animations.forEach((clip) => {
-            self.mixer.clipAction(clip).play();
-          });
+          const mixer = new THREE.AnimationMixer(model);
+          gltf.animations.forEach((clip) => mixer.clipAction(clip).play());
+          self.models[`ELE${id}`] = { model, mixer, sound: null };
+        } else {
+          self.models[`ELE${id}`] = { model, mixer: null, sound: null };
         }
 
         self.loadingBar.visible = false;
@@ -183,108 +162,47 @@ class App {
         // Start animation loop
         self.renderer.setAnimationLoop(self.render.bind(self));
       },
-      function (xhr) {
+      (xhr) => {
         self.loadingBar.progress = xhr.loaded / xhr.total;
       },
-      function (error) {
+      (error) => {
         console.log("An error happened while loading the model:", error);
       }
     );
   }
 
-  initAR() {
-    let currentSession = null;
+  loadSound(id) {
+    const audioLoader = new THREE.AudioLoader();
+    const listener = new THREE.AudioListener();
+    this.camera.add(listener);
+
+    const sound = new THREE.Audio(listener);
     const self = this;
 
-    const sessionInit = { requiredFeatures: ["hit-test"] };
-
-    function onSessionStarted(session) {
-      session.addEventListener("end", onSessionEnded);
-
-      self.renderer.xr.setReferenceSpaceType("local");
-      self.renderer.xr.setSession(session);
-
-      currentSession = session;
-    }
-
-    function onSessionEnded() {
-      currentSession.removeEventListener("end", onSessionEnded);
-
-      currentSession = null;
-
-      if (self.chair !== null) {
-        self.scene.remove(self.chair);
-        self.chair = null;
-      }
-
-      self.renderer.setAnimationLoop(null);
-    }
-
-    if (currentSession === null) {
-      navigator.xr
-        .requestSession("immersive-ar", sessionInit)
-        .then(onSessionStarted);
-    } else {
-      currentSession.end();
-    }
-  }
-
-  requestHitTestSource() {
-    const self = this;
-
-    const session = this.renderer.xr.getSession();
-
-    session.requestReferenceSpace("viewer").then(function (referenceSpace) {
-      session
-        .requestHitTestSource({ space: referenceSpace })
-        .then(function (source) {
-          self.hitTestSource = source;
-        });
+    audioLoader.load(`${this.audioPath}sound${id}.wav`, (buffer) => {
+      sound.setBuffer(buffer);
+      sound.setLoop(false);
+      sound.setVolume(0.5);
+      self.models[`ELE${id}`].sound = sound;
     });
-
-    session.addEventListener("end", function () {
-      self.hitTestSourceRequested = false;
-      self.hitTestSource = null;
-      self.referenceSpace = null;
-    });
-
-    this.hitTestSourceRequested = true;
   }
 
-  getHitTestResults(frame) {
-    const hitTestResults = frame.getHitTestResults(this.hitTestSource);
-
-    if (hitTestResults.length) {
-      const referenceSpace = this.renderer.xr.getReferenceSpace();
-      const hit = hitTestResults[0];
-      const pose = hit.getPose(referenceSpace);
-
-      this.reticle.visible = true;
-      this.reticle.matrix.fromArray(pose.transform.matrix);
-    } else {
-      this.reticle.visible = false;
+  loadAssets() {
+    for (let i = 1; i <= 3; i++) {
+      this.loadModel(i);
+      this.loadSound(i);
     }
-  }
-
-  onTouchStart(event) {
-    this.controls.enabled = true;
-  }
-
-  onTouchEnd(event) {
-    this.controls.enabled = false;
   }
 
   render(timestamp, frame) {
     if (frame) {
       if (this.hitTestSourceRequested === false) this.requestHitTestSource();
-
       if (this.hitTestSource) this.getHitTestResults(frame);
     }
 
-    // Update animations
-    if (this.mixer) {
-      this.mixer.update(this.clock.getDelta());
-    }
+    Object.values(this.models).forEach(({ mixer }) => {
+      if (mixer) mixer.update(this.clock.getDelta());
+    });
 
     this.renderer.render(this.scene, this.camera);
     this.controls.update();
