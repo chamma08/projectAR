@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AR Navigation with Multiple Targets</title>
+    <title>AR Navigation Example</title>
     <!-- Include A-Frame and MindAR -->
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
@@ -16,19 +16,24 @@
         height: 100%;
         overflow: hidden;
       }
-
       a-scene {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
+        display: none; /* Hide scenes initially */
+      }
+      a-scene.active {
+        display: block; /* Show only the active scene */
       }
     </style>
   </head>
   <body>
+    <!-- Scene for the first .mind file -->
     <a-scene
-      mindar-image="imageTargetSrc: ./combined_targets.mind; autoStart: true; showStats: false;"
+      id="scene1"
+      mindar-image="imageTargetSrc: ./targets.mind; autoStart: true; showStats: false;"
       color-space="sRGB"
       renderer="colorManagement: true, physicallyCorrectLights"
       embedded
@@ -36,36 +41,81 @@
       device-orientation-permission-ui="enabled: true"
     >
       <a-assets>
-        <a-asset-item id="model1" src="./assets/ar-shop/ELE1.glb"></a-asset-item>
-        <a-asset-item id="model2" src="./assets/ar-shop/ELE2.glb"></a-asset-item>
+        <a-asset-item id="model1" src="./models/ELE.glb"></a-asset-item>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <!-- Targets for the combined .mind file -->
       <a-entity mindar-image-target="targetIndex: 0" id="target1"></a-entity>
-      <a-entity mindar-image-target="targetIndex: 1" id="target2"></a-entity>
+    </a-scene>
+
+    <!-- Scene for the second .mind file -->
+    <a-scene
+      id="scene2"
+      mindar-image="imageTargetSrc: ./targets2.mind; autoStart: true; showStats: false;"
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights"
+      embedded
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: true"
+    >
+      <a-assets>
+        <a-asset-item id="model2" src="./models/ELE2.glb"></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <a-entity mindar-image-target="targetIndex: 0" id="target2"></a-entity>
     </a-scene>
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        const targets = [
-          { id: "target1", url: "model1.html" },
-          { id: "target2", url: "model2.html" },
-        ];
+        // Get references to both scenes
+        const scene1 = document.getElementById("scene1");
+        const scene2 = document.getElementById("scene2");
 
-        targets.forEach((target) => {
-          const entity = document.getElementById(target.id);
+        // Show the first scene and hide the second one initially
+        scene1.classList.add("active");
 
-          entity.addEventListener("targetFound", () => {
-            console.log(`${target.id} found! Navigating to ${target.url}...`);
-            window.location.href = target.url;
-          });
-
-          entity.addEventListener("targetLost", () => {
-            console.log(`${target.id} lost!`);
-          });
+        // Target 1 (Scene 1) event listeners
+        const target1 = document.getElementById("target1");
+        target1.addEventListener("targetFound", () => {
+          console.log("Target 1 found! Navigating to page...");
+          window.location.href = "model.html"; // Navigate to the first page
         });
+
+        target1.addEventListener("targetLost", () => {
+          console.log("Target 1 lost!");
+        });
+
+        // Target 2 (Scene 2) event listeners
+        const target2 = document.getElementById("target2");
+        target2.addEventListener("targetFound", () => {
+          console.log("Target 2 found! Navigating to another page...");
+          window.location.href = "model2.html"; // Navigate to the second page
+        });
+
+        target2.addEventListener("targetLost", () => {
+          console.log("Target 2 lost!");
+        });
+
+        // Logic to switch between scenes dynamically
+        // For example, use a button or other event to switch
+        const switchToScene2 = () => {
+          scene1.classList.remove("active");
+          scene2.classList.add("active");
+        };
+
+        const switchToScene1 = () => {
+          scene2.classList.remove("active");
+          scene1.classList.add("active");
+        };
+
+        // Example: Automatically switch to the second scene after a delay
+        setTimeout(() => {
+          console.log("Switching to Scene 2");
+          switchToScene2();
+        }, 5000); // Switch after 5 seconds (adjust as needed)
       });
     </script>
   </body>
