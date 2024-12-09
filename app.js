@@ -95,14 +95,30 @@ class App {
         self.chair.position.setFromMatrixPosition(self.reticle.matrix);
         self.chair.visible = true;
 
-        // Play sound only for a specific model ID (e.g., ELE1.glb)
-        const targetModelId = 1; // Change this ID to the desired model
-        if (self.currentModelId === targetModelId) {
-          const audioFile = "esound.mp3"; // Sound file for the target model
+        // Sound mapping for models
+        const soundMap = {
+          1: "esound.mp3", // Sound for ELE1.glb
+          2: "b.mp3", // Sound for ELE2.glb
+          3: "b.mp3", // Sound for ELE3.glb
+          4: "b.mp3", // Sound for ELE4.glb
+          // Add more sounds as needed
+        };
 
-          console.log(`Playing sound for model ${targetModelId}: ${audioFile}`);
+        const audioFile = soundMap[self.currentModelId];
+
+        if (audioFile) {
+          console.log(
+            `Playing sound for model ${self.currentModelId}: ${audioFile}`
+          );
 
           if (!self.audio || self.audioFile !== audioFile) {
+            // Clean up the previous audio instance
+            if (self.audio) {
+              self.audio.stop();
+              self.camera.remove(self.audio.listener);
+            }
+
+            // Create a new audio listener and audio instance
             const listener = new THREE.AudioListener();
             self.camera.add(listener);
 
@@ -114,7 +130,7 @@ class App {
               function (buffer) {
                 // Audio loaded successfully
                 self.audio.setBuffer(buffer);
-                self.audio.setLoop(true);
+                self.audio.setLoop(true); // Set to true if you want looping audio
                 self.audio.setVolume(1.0);
                 self.audio.play();
               },
@@ -123,9 +139,12 @@ class App {
                 console.error(`Error loading audio file ${audioFile}:`, error);
               }
             );
+
+            self.audioFile = audioFile; // Update the current audio file reference
           } else {
-            if (THREE.AudioContext.getContext().state === "suspended") {
-              THREE.AudioContext.getContext().resume();
+            // Resume playing the same audio if already loaded
+            if (self.audio.isPlaying) {
+              self.audio.stop();
             }
             self.audio.play();
           }
