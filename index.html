@@ -110,6 +110,7 @@
     >
       <a-assets>
         <a-asset-item id="model1" src="./models/ELE.glb"></a-asset-item>
+        <audio id="sound1" src="./assets/audio/esound.wav"></audio>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
@@ -161,10 +162,14 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        // Get references to all scenes
+        // Get references to all scenes and sounds
         const scene1 = document.getElementById("scene1");
         const scene2 = document.getElementById("scene2");
         const scene3 = document.getElementById("scene3");
+
+        const sound1 = document.getElementById("sound1");
+        const sound2 = document.getElementById("sound2");
+        const sound3 = document.getElementById("sound3");
 
         // Show the first scene initially
         scene1.classList.add("active");
@@ -173,6 +178,7 @@
         const target1 = document.getElementById("target1");
         target1.addEventListener("targetFound", () => {
           console.log("Target 1 found! Navigating to page...");
+          sound1.play(); // Play sound for model 1
           window.location.href = "model1.html"; // Navigate to the first page
         });
 
@@ -184,6 +190,7 @@
         const target2 = document.getElementById("target2");
         target2.addEventListener("targetFound", () => {
           console.log("Target 2 found! Navigating to another page...");
+          sound2.play(); // Play sound for model 2
           window.location.href = "model2.html"; // Navigate to the second page
         });
 
@@ -195,6 +202,7 @@
         const target3 = document.getElementById("target3");
         target3.addEventListener("targetFound", () => {
           console.log("Target 3 found! Navigating to yet another page...");
+          sound3.play(); // Play sound for model 3
           window.location.href = "model3.html"; // Navigate to the third page
         });
 

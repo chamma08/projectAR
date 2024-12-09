@@ -95,45 +95,47 @@ class App {
         self.chair.position.setFromMatrixPosition(self.reticle.matrix);
         self.chair.visible = true;
 
-        // Play the specific sound for the current model
         const soundConfig = {
-          1: "esound.wav", // Sound for ELE1.glb
-          2: "sound2.wav", // Sound for ELE2.glb
-          3: "b.wav", // Sound for ELE3.glb
+          1: "esound.wav",
+          2: "sound2.wav",
+          3: "b.wav",
         };
 
-        const currentModelId = self.currentModelId; 1
+        const currentModelId = self.currentModelId; // Fixed typo here
         const audioFile = soundConfig[currentModelId];
+
+        if (!audioFile) {
+          console.warn("No audio file for model ID:", currentModelId);
+          return;
+        }
+
+        console.log(`Playing sound: ${audioFile}`);
 
         if (!self.audio || self.audioFile !== audioFile) {
           const listener = new THREE.AudioListener();
           self.camera.add(listener);
 
-          // Use existing audio if available
           const sound = new THREE.Audio(listener);
           const audioLoader = new THREE.AudioLoader();
 
           audioLoader.load(
-            `../../assets/audio/${audioFile}`,
+            `./assets/audio/${audioFile}`,
             function (buffer) {
+              // Audio loaded successfully
               sound.setBuffer(buffer);
               sound.setLoop(true);
-              sound.setVolume(0.5);
+              sound.setVolume(1.0);
               sound.play();
-
-              // Save the current sound and its file
-              self.audio = sound;
-              self.audioFile = audioFile;
             },
             undefined,
             function (error) {
-              console.error(
-                "An error occurred while loading the audio:",
-                error
-              );
+              console.error(`Error loading audio file ${audioFile}:`, error);
             }
           );
         } else {
+          if (THREE.AudioContext.getContext().state === "suspended") {
+            THREE.AudioContext.getContext().resume();
+          }
           self.audio.play();
         }
       }
@@ -183,7 +185,7 @@ class App {
 
     // Scale configuration map
     const scaleConfig = {
-      1: { x: 5, y: 5, z: 5 }, // Scale for ELE1.glb
+      1: { x: 1, y: 1, z: 1 }, // Scale for ELE1.glb
       2: { x: 0.01, y: 0.01, z: 0.01 }, // Scale for ELE2.glb
       3: { x: 0.06, y: 0.06, z: 0.06 }, // Scale for ELE3.glb
       // Add more configurations as needed
