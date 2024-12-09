@@ -110,7 +110,7 @@
     >
       <a-assets>
         <a-asset-item id="model1" src="./models/ELE.glb"></a-asset-item>
-        <audio id="sound1" src="./assets/audio/esound.wav"></audio>
+        <audio id="sound1" src="./assets/audio/esound.mp3"></audio>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
@@ -157,6 +157,28 @@
 
       <a-entity mindar-image-target="targetIndex: 0" id="target3">
         <a-entity gltf-model="#model3" position="0 0 0"></a-entity>
+      </a-entity>
+    </a-scene>
+
+    <!-- Scene for the fourth .mind file -->
+    <a-scene
+      id="scene4"
+      mindar-image="imageTargetSrc: ./targets4.mind; autoStart: true; showStats: false;"
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights"
+      embedded
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: true"
+    >
+      <a-assets>
+        <a-asset-item id="model4" src="./models/ELE4.glb"></a-asset-item>
+        <audio id="sound4" src="./assets/audio/sound4.wav"></audio>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <a-entity mindar-image-target="targetIndex: 0" id="target4">
+        <a-entity gltf-model="#model4" position="0 0 0"></a-entity>
       </a-entity>
     </a-scene>
 

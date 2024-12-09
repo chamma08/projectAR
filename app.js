@@ -95,48 +95,42 @@ class App {
         self.chair.position.setFromMatrixPosition(self.reticle.matrix);
         self.chair.visible = true;
 
-        const soundConfig = {
-          1: "esound.wav",
-          2: "sound2.wav",
-          3: "b.wav",
-        };
+        // Play sound only for a specific model ID (e.g., ELE1.glb)
+        const targetModelId = 1; // Change this ID to the desired model
+        if (self.currentModelId === targetModelId) {
+          const audioFile = "esound.mp3"; // Sound file for the target model
 
-        const currentModelId = self.currentModelId; // Fixed typo here
-        const audioFile = soundConfig[currentModelId];
+          console.log(`Playing sound for model ${targetModelId}: ${audioFile}`);
 
-        if (!audioFile) {
-          console.warn("No audio file for model ID:", currentModelId);
-          return;
-        }
+          if (!self.audio || self.audioFile !== audioFile) {
+            const listener = new THREE.AudioListener();
+            self.camera.add(listener);
 
-        console.log(`Playing sound: ${audioFile}`);
+            self.audio = new THREE.Audio(listener);
+            const audioLoader = new THREE.AudioLoader();
 
-        if (!self.audio || self.audioFile !== audioFile) {
-          const listener = new THREE.AudioListener();
-          self.camera.add(listener);
-
-          const sound = new THREE.Audio(listener);
-          const audioLoader = new THREE.AudioLoader();
-
-          audioLoader.load(
-            `./assets/audio/${audioFile}`,
-            function (buffer) {
-              // Audio loaded successfully
-              sound.setBuffer(buffer);
-              sound.setLoop(true);
-              sound.setVolume(1.0);
-              sound.play();
-            },
-            undefined,
-            function (error) {
-              console.error(`Error loading audio file ${audioFile}:`, error);
+            audioLoader.load(
+              `./assets/audio/${audioFile}`,
+              function (buffer) {
+                // Audio loaded successfully
+                self.audio.setBuffer(buffer);
+                self.audio.setLoop(true);
+                self.audio.setVolume(1.0);
+                self.audio.play();
+              },
+              undefined,
+              function (error) {
+                console.error(`Error loading audio file ${audioFile}:`, error);
+              }
+            );
+          } else {
+            if (THREE.AudioContext.getContext().state === "suspended") {
+              THREE.AudioContext.getContext().resume();
             }
-          );
-        } else {
-          if (THREE.AudioContext.getContext().state === "suspended") {
-            THREE.AudioContext.getContext().resume();
+            self.audio.play();
           }
-          self.audio.play();
+        } else {
+          console.log(`No sound assigned for model ID: ${self.currentModelId}`);
         }
       }
     }
@@ -188,6 +182,7 @@ class App {
       1: { x: 1, y: 1, z: 1 }, // Scale for ELE1.glb
       2: { x: 0.01, y: 0.01, z: 0.01 }, // Scale for ELE2.glb
       3: { x: 0.06, y: 0.06, z: 0.06 }, // Scale for ELE3.glb
+      4: { x: 0.03, y: 0.03, z: 0.03 },
       // Add more configurations as needed
     };
 
