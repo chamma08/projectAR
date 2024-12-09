@@ -27,7 +27,7 @@
     </style>
   </head>
   <body>
-    <!-- Scene for the first .mind file -->
+    <!-- Scene for MindAR -->
     <a-scene
       mindar-image="imageTargetSrc: ./targets.mind; autoStart: true; showStats: false;"
       color-space="sRGB"
@@ -37,30 +37,65 @@
       device-orientation-permission-ui="enabled: true"
     >
       <a-assets>
-        <a-asset-item id="model1" src="./models/ELE.glb"></a-asset-item>
+        <!-- Preload Models -->
+        <a-asset-item id="model1" src="./models/ELE1.glb"></a-asset-item>
+        <a-asset-item id="model2" src="./models/ELE2.glb"></a-asset-item>
+        <a-asset-item id="model3" src="./models/ELE3.glb"></a-asset-item>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <!-- This entity listens for the targetFound event -->
-      <a-entity mindar-image-target="targetIndex: 0" id="target1"></a-entity>
+      <!-- Target for the first MindAR image -->
+      <a-entity mindar-image-target="targetIndex: 0" id="target1">
+        <a-gltf-model
+          src="#model1"
+          scale="0.5 0.5 0.5"
+          position="0 0 0"
+        ></a-gltf-model>
+      </a-entity>
+
+      <!-- Target for the second MindAR image -->
+      <a-entity mindar-image-target="targetIndex: 2" id="target3">
+        <a-gltf-model
+          src="#model2"
+          scale="0.5 0.5 0.5"
+          position="0 0 0"
+        ></a-gltf-model>
+      </a-entity>
+
+      <!-- Target for the third MindAR image -->
+      <a-entity mindar-image-target="targetIndex: 2" id="target3">
+        <a-gltf-model
+          src="#model3"
+          scale="0.5 0.5 0.5"
+          position="0 0 0"
+        ></a-gltf-model>
+      </a-entity>
     </a-scene>
 
     <script>
       // JavaScript to handle navigation
       document.addEventListener("DOMContentLoaded", () => {
-        // Get the target entity
-        const target1 = document.getElementById("target1");
+        // Add event listeners for each target
+        const targets = [
+          { id: "target1", url: "model1.html" },
+          { id: "target2", url: "model2.html" },
+          { id: "target3", url: "model3.html" },
+        ];
 
-        // Listen for targetFound event
-        target1.addEventListener("targetFound", () => {
-          console.log("Target 1 found! Navigating to page...");
-          window.location.href = "model.html"; // Replace with your desired URL
-        });
+        targets.forEach((target) => {
+          const element = document.getElementById(target.id);
 
-        // Optional: Listen for targetLost event
-        target1.addEventListener("targetLost", () => {
-          console.log("Target 1 lost!");
+          // Navigate to corresponding page on target found
+          element.addEventListener("targetFound", () => {
+            console.log(`${target.id} found! Navigating to page...`);
+            window.location.href = target.url; // Navigate to specific URL
+          });
+
+          // Optional: Log message when the target is lost
+          element.addEventListener("targetLost", () => {
+            console.log(`${target.id} lost!`);
+          });
         });
       });
     </script>
