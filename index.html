@@ -110,7 +110,7 @@
     >
       <a-assets>
         <a-asset-item id="model1" src="./models/ELE.glb"></a-asset-item>
-        <audio id="sound1" src="./assets/audio/esound.mp3"></audio>
+        <audio id="sound1" src="./assets/audio/esound.wav"></audio>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
@@ -157,28 +157,6 @@
 
       <a-entity mindar-image-target="targetIndex: 0" id="target3">
         <a-entity gltf-model="#model3" position="0 0 0"></a-entity>
-      </a-entity>
-    </a-scene>
-
-    <!-- Scene for the fourth .mind file -->
-    <a-scene
-      id="scene4"
-      mindar-image="imageTargetSrc: ./targets4.mind; autoStart: true; showStats: false;"
-      color-space="sRGB"
-      renderer="colorManagement: true, physicallyCorrectLights"
-      embedded
-      vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: true"
-    >
-      <a-assets>
-        <a-asset-item id="model4" src="./models/ELE4.glb"></a-asset-item>
-        <audio id="sound4" src="./assets/audio/sound4.wav"></audio>
-      </a-assets>
-
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-
-      <a-entity mindar-image-target="targetIndex: 0" id="target4">
-        <a-entity gltf-model="#model4" position="0 0 0"></a-entity>
       </a-entity>
     </a-scene>
 
@@ -251,35 +229,6 @@
           switchToScene(scene3);
         }, 10000);
       });
-
-      const scene4 = document.getElementById("scene4");
-      const sound4 = document.getElementById("sound4");
-
-      // Target 4 (Scene 4) event listeners
-      const target4 = document.getElementById("target4");
-      target4.addEventListener("targetFound", () => {
-        console.log("Target 4 found! Navigating to the fourth page...");
-        sound4.play(); // Play sound for model 4
-        window.location.href = "model4.html"; // Navigate to the fourth page
-      });
-
-      target4.addEventListener("targetLost", () => {
-        console.log("Target 4 lost!");
-      });
-
-      // Add Scene 4 to the dynamic scene switcher
-      const switchToScene = (sceneToShow) => {
-        [scene1, scene2, scene3, scene4].forEach((scene) =>
-          scene.classList.remove("active")
-        );
-        sceneToShow.classList.add("active");
-      };
-
-      // Example: Add a timer for Scene 4
-      setTimeout(() => {
-        console.log("Switching to Scene 4");
-        switchToScene(scene4);
-      }, 15000);
 
       document.getElementById("close-button").addEventListener("click", () => {
         document.getElementById("message-box").style.display = "none";
