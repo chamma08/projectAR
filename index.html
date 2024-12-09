@@ -27,9 +27,54 @@
       a-scene.active {
         display: block; /* Show only the active scene */
       }
+
+      #message-box {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%;
+        max-width: 400px;
+        background: rgba(0, 0, 0, 0.8); /* Semi-transparent black background */
+        color: white;
+        padding: 20px 20px 10px; /* Add padding to prevent overlap with the close button */
+        border-radius: 10px;
+        z-index: 1000;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      #message-content {
+        position: relative;
+      }
+
+      #close-button {
+        position: absolute;
+        top: -30px;
+        right: 10px;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+        outline: none;
+      }
+
+      #close-button:hover {
+        color: red;
+      }
     </style>
   </head>
   <body>
+    <div id="message-box">
+      <div id="message-content">
+        <button id="close-button">&times;</button>
+        <p>
+          Scan the image you want to visualize in AR. Once scanned,
+          Automatically navigate to the page contains with the model according
+          to the image.
+        </p>
+      </div>
+    </div>
     <!-- Scene for the first .mind file -->
     <a-scene
       id="scene1"
@@ -66,10 +111,7 @@
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
       <a-entity mindar-image-target="targetIndex: 0" id="target2">
-        <a-entity
-          gltf-model="#model2"
-          position="0 0 0"
-        ></a-entity>
+        <a-entity gltf-model="#model2" position="0 0 0"></a-entity>
       </a-entity>
     </a-scene>
 
@@ -90,10 +132,7 @@
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
       <a-entity mindar-image-target="targetIndex: 0" id="target3">
-        <a-entity
-          gltf-model="#model3"
-          position="0 0 0"
-        ></a-entity>
+        <a-entity gltf-model="#model3" position="0 0 0"></a-entity>
       </a-entity>
     </a-scene>
 
@@ -158,6 +197,10 @@
           console.log("Switching to Scene 3");
           switchToScene(scene3);
         }, 10000);
+      });
+
+      document.getElementById("close-button").addEventListener("click", () => {
+        document.getElementById("message-box").style.display = "none";
       });
     </script>
   </body>
