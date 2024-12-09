@@ -102,7 +102,7 @@ class App {
           3: "b.wav", // Sound for ELE3.glb
         };
 
-        const currentModelId = self.currentModelId; // Default to model 1 if not set
+        const currentModelId = self.currentModelId; 1
         const audioFile = soundConfig[currentModelId];
 
         if (!self.audio || self.audioFile !== audioFile) {
