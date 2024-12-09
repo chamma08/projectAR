@@ -252,6 +252,35 @@
         }, 10000);
       });
 
+      const scene4 = document.getElementById("scene4");
+      const sound4 = document.getElementById("sound4");
+
+      // Target 4 (Scene 4) event listeners
+      const target4 = document.getElementById("target4");
+      target4.addEventListener("targetFound", () => {
+        console.log("Target 4 found! Navigating to the fourth page...");
+        sound4.play(); // Play sound for model 4
+        window.location.href = "model4.html"; // Navigate to the fourth page
+      });
+
+      target4.addEventListener("targetLost", () => {
+        console.log("Target 4 lost!");
+      });
+
+      // Add Scene 4 to the dynamic scene switcher
+      const switchToScene = (sceneToShow) => {
+        [scene1, scene2, scene3, scene4].forEach((scene) =>
+          scene.classList.remove("active")
+        );
+        sceneToShow.classList.add("active");
+      };
+
+      // Example: Add a timer for Scene 4
+      setTimeout(() => {
+        console.log("Switching to Scene 4");
+        switchToScene(scene4);
+      }, 15000);
+
       document.getElementById("close-button").addEventListener("click", () => {
         document.getElementById("message-box").style.display = "none";
       });
