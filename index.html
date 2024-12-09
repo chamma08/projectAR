@@ -65,16 +65,46 @@
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <a-entity mindar-image-target="targetIndex: 0" id="target2"></a-entity>
+      <a-entity mindar-image-target="targetIndex: 0" id="target2">
+        <a-entity
+          gltf-model="#model2"
+          position="0 0 0"
+        ></a-entity>
+      </a-entity>
+    </a-scene>
+
+    <!-- Scene for the third .mind file -->
+    <a-scene
+      id="scene3"
+      mindar-image="imageTargetSrc: ./targets3.mind; autoStart: true; showStats: false;"
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights"
+      embedded
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: true"
+    >
+      <a-assets>
+        <a-asset-item id="model3" src="./models/ELE3.glb"></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <a-entity mindar-image-target="targetIndex: 0" id="target3">
+        <a-entity
+          gltf-model="#model3"
+          position="0 0 0"
+        ></a-entity>
+      </a-entity>
     </a-scene>
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        // Get references to both scenes
+        // Get references to all scenes
         const scene1 = document.getElementById("scene1");
         const scene2 = document.getElementById("scene2");
+        const scene3 = document.getElementById("scene3");
 
-        // Show the first scene and hide the second one initially
+        // Show the first scene initially
         scene1.classList.add("active");
 
         // Target 1 (Scene 1) event listeners
@@ -99,23 +129,35 @@
           console.log("Target 2 lost!");
         });
 
+        // Target 3 (Scene 3) event listeners
+        const target3 = document.getElementById("target3");
+        target3.addEventListener("targetFound", () => {
+          console.log("Target 3 found! Navigating to yet another page...");
+          window.location.href = "model3.html"; // Navigate to the third page
+        });
+
+        target3.addEventListener("targetLost", () => {
+          console.log("Target 3 lost!");
+        });
+
         // Logic to switch between scenes dynamically
-        // For example, use a button or other event to switch
-        const switchToScene2 = () => {
-          scene1.classList.remove("active");
-          scene2.classList.add("active");
+        const switchToScene = (sceneToShow) => {
+          [scene1, scene2, scene3].forEach((scene) =>
+            scene.classList.remove("active")
+          );
+          sceneToShow.classList.add("active");
         };
 
-        const switchToScene1 = () => {
-          scene2.classList.remove("active");
-          scene1.classList.add("active");
-        };
-
-        // Example: Automatically switch to the second scene after a delay
+        // Example: Automatically cycle through scenes
         setTimeout(() => {
           console.log("Switching to Scene 2");
-          switchToScene2();
-        }, 5000); // Switch after 5 seconds (adjust as needed)
+          switchToScene(scene2);
+        }, 5000);
+
+        setTimeout(() => {
+          console.log("Switching to Scene 3");
+          switchToScene(scene3);
+        }, 10000);
       });
     </script>
   </body>
