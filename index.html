@@ -30,17 +30,18 @@
 
       #message-box {
         position: fixed;
-        top: 20px;
+        top: 10%; /* Adjust to fit on smaller screens */
         left: 50%;
         transform: translateX(-50%);
-        width: 80%;
-        max-width: 400px;
+        width: 90%; /* Responsive width */
+        max-width: 400px; /* Set a max width for larger screens */
         background: rgba(0, 0, 0, 0.8); /* Semi-transparent black background */
         color: white;
-        padding: 20px 20px 10px; /* Add padding to prevent overlap with the close button */
+        padding: 20px 20px 15px; /* Adjust padding to accommodate close button */
         border-radius: 10px;
         z-index: 1000;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        word-wrap: break-word; /* Ensure text wraps */
       }
 
       #message-content {
@@ -61,6 +62,28 @@
 
       #close-button:hover {
         color: red;
+      }
+
+      /* Make sure text size adjusts for small screens */
+      #message-box p {
+        font-size: 1rem; /* Default for regular screens */
+      }
+
+      /* Media query for smaller screens */
+      @media screen and (max-width: 600px) {
+        #message-box {
+          top: 5%; /* Adjust top margin for smaller screens */
+          width: 95%; /* Increase width for small screens */
+          padding: 15px 15px 10px; /* Adjust padding */
+        }
+
+        #message-box p {
+          font-size: 0.9rem; /* Smaller text size for small screens */
+        }
+
+        #close-button {
+          font-size: 18px; /* Slightly smaller close button */
+        }
       }
     </style>
   </head>
