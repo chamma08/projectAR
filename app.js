@@ -217,6 +217,9 @@ class App {
 
         self.chair.visible = false;
 
+        // Set the current model ID
+        self.currentModelId = id;
+
         // Set up animation
         if (gltf.animations && gltf.animations.length > 0) {
           self.mixer = new THREE.AnimationMixer(gltf.scene);
