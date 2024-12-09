@@ -198,7 +198,7 @@ class App {
 
     // Scale configuration map
     const scaleConfig = {
-      1: { x: 3, y: 3, z: 3 }, // Scale for ELE1.glb
+      1: { x: 5, y: 5, z: 5 }, // Scale for ELE1.glb
       2: { x: 0.01, y: 0.01, z: 0.01 }, // Scale for ELE2.glb
       3: { x: 0.06, y: 0.06, z: 0.06 }, // Scale for ELE3.glb
       4: { x: 0.03, y: 0.03, z: 0.03 },
