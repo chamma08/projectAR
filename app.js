@@ -303,6 +303,11 @@ class App {
       self.renderer.xr.setSession(session);
 
       currentSession = session;
+
+      const descriptionContainer = document.getElementById("ar-description");
+      if (descriptionContainer) {
+        descriptionContainer.style.display = "block"; // Make sure it's visible
+      }
     }
 
     function onSessionEnded() {
