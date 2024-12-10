@@ -151,23 +151,6 @@ class App {
         } else {
           console.log(`No sound assigned for model ID: ${self.currentModelId}`);
         }
-
-        const descriptionMap = {
-          1: "A majestic symbol of our natural heritage, towering up to 10 feet and weighing over 5000kg. Elephants play a crucial role in shaping forests and sustaining biodiversity.",
-          2: "A smaller and elegant version of the elephant model.",
-          3: "A miniature artistic interpretation of an elephant.",
-          4: "Another detailed 3D elephant model.",
-        };
-
-        // Fetch the description and display it
-        const descriptionBox = document.getElementById("description-box");
-        const descriptionText = document.getElementById("description-text");
-        const modelDescription =
-          descriptionMap[self.currentModelId] ||
-          "Default description for the 3D model.";
-
-        descriptionText.innerText = modelDescription;
-        descriptionBox.style.display = "block";
       }
     }
 
@@ -175,7 +158,11 @@ class App {
     this.controller.addEventListener("select", onSelect);
 
     this.scene.add(this.controller);
+
+    
+    
   }
+  
 
   resize() {
     this.camera.aspect = window.innerWidth / window.innerHeight;
@@ -223,6 +210,15 @@ class App {
       // Add more configurations as needed
     };
 
+    // Description map for models
+    const descriptionMap = {
+      1: "This is an elephant model, perfect for wildlife-themed AR experiences.",
+      2: "This is a small scale building model ideal for architecture AR demos.",
+      3: "This is a furniture model showcasing modern design in AR.",
+      4: "This is a toy car model, perfect for kids' AR entertainment.",
+      5: "This is a plant model, great for AR gardening apps.",
+    };
+
     loader.load(
       `ELE${id}.glb`,
       function (gltf) {
@@ -237,6 +233,15 @@ class App {
 
         // Set the current model ID
         self.currentModelId = id;
+
+        // Update description
+        const description =
+          descriptionMap[id] || "No description available for this model.";
+        document.getElementById("ar-description-text").textContent =
+          description;
+
+        // Show the description
+        document.getElementById("ar-description").style.display = "block";
 
         // Set up animation
         if (gltf.animations && gltf.animations.length > 0) {
@@ -286,6 +291,8 @@ class App {
       }
 
       self.renderer.setAnimationLoop(null);
+
+      document.getElementById("ar-description").style.display = "none";
     }
 
     if (currentSession === null) {
