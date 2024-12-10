@@ -121,12 +121,6 @@
       document.addEventListener("DOMContentLoaded", function () {
         const app = new App();
         window.app = app;
-        app.showDescription = (text) => {
-          const descriptionBox = document.getElementById("description-box");
-          const descriptionText = document.getElementById("description-text");
-          descriptionText.innerText = text;
-          descriptionBox.style.display = "block";
-        };
       });
     </script>
   </body>

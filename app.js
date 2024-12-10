@@ -273,13 +273,17 @@ class App {
   // Display description in AR view
   displayDescription(text) {
     const descriptionBox = document.getElementById("description-box");
-    descriptionBox.style.display = "block";
-    descriptionBox.innerText = text;
+    if (descriptionBox) {
+      descriptionBox.style.display = "block";
+      descriptionBox.innerText = text;
 
-    // Optional: Hide the description after 10 seconds
-    setTimeout(() => {
-      descriptionBox.style.display = "none";
-    }, 10000);
+      // Optional: Hide the description after 10 seconds
+      setTimeout(() => {
+        descriptionBox.style.display = "none";
+      }, 10000);
+    } else {
+      console.error("Description box not found in HTML.");
+    }
   }
 
   initAR() {
