@@ -247,6 +247,25 @@ class App {
           descContainer.style.display = "block";
         }
 
+        // Keep description visible during AR session
+        function ensureDescriptionVisibility() {
+          if (descContainer) {
+            descContainer.style.display = "block";
+          }
+        }
+
+        // Set up interval to enforce visibility
+        self.checkDescriptionInterval = setInterval(() => {
+          ensureDescriptionVisibility();
+        }, 1000);
+
+        // Clear the interval when AR session ends
+        if (self.renderer && self.renderer.xr) {
+          self.renderer.xr.addEventListener("sessionend", () => {
+            clearInterval(self.checkDescriptionInterval);
+          });
+        }
+
         // Set up animation
         if (gltf.animations && gltf.animations.length > 0) {
           self.mixer = new THREE.AnimationMixer(gltf.scene);
@@ -296,7 +315,11 @@ class App {
 
       self.renderer.setAnimationLoop(null);
 
-      document.getElementById("ar-description").style.display = "none";
+      // Hide the AR description
+      const descContainer = document.getElementById("ar-description");
+      if (descContainer) {
+        descContainer.style.display = "none";
+      }
     }
 
     if (currentSession === null) {
