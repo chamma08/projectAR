@@ -245,12 +245,14 @@ class App {
         if (descElement && descContainer) {
           descElement.textContent = description;
           descContainer.style.display = "block";
+          descContainer.style.zIndex = 1000;
         }
 
         // Keep description visible during AR session
         function ensureDescriptionVisibility() {
           if (descContainer) {
             descContainer.style.display = "block";
+            descContainer.style.zIndex = 1000;
           }
         }
 
