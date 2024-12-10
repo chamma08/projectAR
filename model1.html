@@ -40,6 +40,22 @@
     <title>AR Tracking and Place</title>
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+
+    <style>
+      /* Add the CSS styling directly here or in a separate .css file */
+      #description-box {
+        position: absolute;
+        bottom: 10%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        font-size: 14px;
+        text-align: center;
+      }
+    </style>
   </head>
 
   <body class="bg-white text-gray-900">
@@ -73,7 +89,6 @@
       </button>
     </section>
 
-
     <!-- AR Models Section -->
     <section class="grid grid-cols-1 md:grid-cols-3 gap-8 px-4 py-12">
       <div class="bg-white shadow-md rounded-lg overflow-hidden">
@@ -94,6 +109,11 @@
       </div>
     </section>
 
+    <!-- Description Box -->
+    <div id="description-box" style="display: none">
+      <p id="description-text"></p>
+    </div>
+
     <script src="../../libs/fas.js"></script>
     <script type="module">
       import { App } from "./app.js";
@@ -101,6 +121,12 @@
       document.addEventListener("DOMContentLoaded", function () {
         const app = new App();
         window.app = app;
+        app.showDescription = (text) => {
+          const descriptionBox = document.getElementById("description-box");
+          const descriptionText = document.getElementById("description-text");
+          descriptionText.innerText = text;
+          descriptionBox.style.display = "block";
+        };
       });
     </script>
   </body>

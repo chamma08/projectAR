@@ -151,6 +151,22 @@ class App {
         } else {
           console.log(`No sound assigned for model ID: ${self.currentModelId}`);
         }
+
+        const descriptionBox = document.getElementById("description-box");
+        const descriptionText = document.getElementById("description-text");
+
+        const descriptionMap = {
+          1: "A majestic symbol of our natural heritage, towering up to 10 feet and weighing over 5000kg. Elephants play a crucial role in shaping forests and sustaining biodiversity.", // Description for ELE1.glb
+          2: "Description for ELE2.glb", // Update with actual text
+          3: "Description for ELE3.glb", // Update with actual text
+          4: "Description for ELE4.glb", // Update with actual text
+        };
+
+        const modelDescription = descriptionMap[self.currentModelId];
+        if (modelDescription) {
+          descriptionText.innerText = modelDescription;
+          descriptionBox.style.display = "block";
+        }
       }
     }
 
