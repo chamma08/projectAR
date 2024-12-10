@@ -152,21 +152,22 @@ class App {
           console.log(`No sound assigned for model ID: ${self.currentModelId}`);
         }
 
-        const descriptionBox = document.getElementById("description-box");
-        const descriptionText = document.getElementById("description-text");
-
         const descriptionMap = {
-          1: "A majestic symbol of our natural heritage, towering up to 10 feet and weighing over 5000kg. Elephants play a crucial role in shaping forests and sustaining biodiversity.", // Description for ELE1.glb
-          2: "Description for ELE2.glb", // Update with actual text
-          3: "Description for ELE3.glb", // Update with actual text
-          4: "Description for ELE4.glb", // Update with actual text
+          1: "A majestic symbol of our natural heritage, towering up to 10 feet and weighing over 5000kg. Elephants play a crucial role in shaping forests and sustaining biodiversity.",
+          2: "A smaller and elegant version of the elephant model.",
+          3: "A miniature artistic interpretation of an elephant.",
+          4: "Another detailed 3D elephant model.",
         };
 
-        const modelDescription = descriptionMap[self.currentModelId];
-        if (modelDescription) {
-          descriptionText.innerText = modelDescription;
-          descriptionBox.style.display = "block";
-        }
+        // Fetch the description and display it
+        const descriptionBox = document.getElementById("description-box");
+        const descriptionText = document.getElementById("description-text");
+        const modelDescription =
+          descriptionMap[self.currentModelId] ||
+          "Default description for the 3D model.";
+
+        descriptionText.innerText = modelDescription;
+        descriptionBox.style.display = "block";
       }
     }
 
