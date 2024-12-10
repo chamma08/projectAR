@@ -158,11 +158,7 @@ class App {
     this.controller.addEventListener("select", onSelect);
 
     this.scene.add(this.controller);
-
-    
-    
   }
-  
 
   resize() {
     this.camera.aspect = window.innerWidth / window.innerHeight;
@@ -237,8 +233,11 @@ class App {
         // Update description
         const description =
           descriptionMap[id] || "No description available for this model.";
+        console.log(`Description for ID ${id}: ${description}`); // Debugging
         document.getElementById("ar-description-text").textContent =
           description;
+
+        console.log("Description updated:", description);
 
         // Show the description
         document.getElementById("ar-description").style.display = "block";
