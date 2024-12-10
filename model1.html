@@ -96,17 +96,18 @@
     <section
       id="ar-description"
       style="
-        position: absolute;
-        top: 50px;
+        position: fixed;
+        top: 10px;
         left: 10px;
         z-index: 1000;
-        display: none;
-        background-color: rgba(0, 0, 0, 0.7);
+        display: none; /* Initially hidden */
+        background-color: rgba(0, 0, 0, 0.8);
         color: white;
         padding: 10px;
         border-radius: 5px;
         max-width: 300px;
         font-size: 14px;
+        pointer-events: none;
       "
     >
       <p id="ar-description-text">AR Description goes here.</p>

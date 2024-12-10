@@ -81,6 +81,12 @@ class App {
           });
         }
       });
+
+      // Ensure AR description stays visible
+      const description = document.getElementById("ar-description");
+      if (description) {
+        description.style.display = "block";
+      }
     }
 
     const self = this;
@@ -230,17 +236,16 @@ class App {
         // Set the current model ID
         self.currentModelId = id;
 
-        // Update description
-        const description =
-          descriptionMap[id] || "No description available for this model.";
-        console.log(`Description for ID ${id}: ${description}`); // Debugging
-        document.getElementById("ar-description-text").textContent =
-          description;
+        const description = descriptionMap[id] || "No description available.";
 
-        console.log("Description updated:", description);
+        // Update the DOM element
+        const descElement = document.getElementById("ar-description-text");
+        const descContainer = document.getElementById("ar-description");
 
-        // Show the description
-        document.getElementById("ar-description").style.display = "block";
+        if (descElement && descContainer) {
+          descElement.textContent = description;
+          descContainer.style.display = "block";
+        }
 
         // Set up animation
         if (gltf.animations && gltf.animations.length > 0) {
