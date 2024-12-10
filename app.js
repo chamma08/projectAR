@@ -214,18 +214,12 @@ class App {
 
     // Scale configuration map
     const scaleConfig = {
-      1: { x: 5, y: 5, z: 5 },
-      2: { x: 0.01, y: 0.01, z: 0.01 },
-      3: { x: 0.06, y: 0.06, z: 0.06 },
+      1: { x: 5, y: 5, z: 5 }, // Scale for ELE1.glb
+      2: { x: 0.01, y: 0.01, z: 0.01 }, // Scale for ELE2.glb
+      3: { x: 0.06, y: 0.06, z: 0.06 }, // Scale for ELE3.glb
       4: { x: 0.03, y: 0.03, z: 0.03 },
       5: { x: 0.3, y: 0.3, z: 0.3 },
-    };
-
-    // Description configuration map
-    const descriptionConfig = {
-      1: "A majestic symbol of our natural heritage, towering up to 10 feet and weighing over 5000kg.",
-      2: "A smaller but elegant representation of the mighty elephant.",
-      3: "A detailed artistic interpretation of an elephant in miniature.",
+      // Add more configurations as needed
     };
 
     loader.load(
@@ -235,7 +229,7 @@ class App {
         self.chair = gltf.scene;
 
         // Apply scale based on configuration
-        const scale = scaleConfig[id] || { x: 1, y: 1, z: 1 };
+        const scale = scaleConfig[id] || { x: 1, y: 1, z: 1 }; // Default scale if not in config
         self.chair.scale.set(scale.x, scale.y, scale.z);
 
         self.chair.visible = false;
@@ -253,11 +247,6 @@ class App {
 
         self.loadingBar.visible = false;
 
-        // Show description for the placed model
-        const description =
-          descriptionConfig[id] || "A stunning 3D model of an elephant.";
-        self.displayDescription(description);
-
         // Start animation loop
         self.renderer.setAnimationLoop(self.render.bind(self));
       },
@@ -268,22 +257,6 @@ class App {
         console.log("An error happened while loading the model:", error);
       }
     );
-  }
-
-  // Display description in AR view
-  displayDescription(text) {
-    const descriptionBox = document.getElementById("description-box");
-    if (descriptionBox) {
-      descriptionBox.style.display = "block";
-      descriptionBox.innerText = text;
-
-      // Optional: Hide the description after 10 seconds
-      setTimeout(() => {
-        descriptionBox.style.display = "none";
-      }, 10000);
-    } else {
-      console.error("Description box not found in HTML.");
-    }
   }
 
   initAR() {
