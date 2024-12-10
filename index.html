@@ -31,10 +31,10 @@
       #message-box {
         position: fixed;
         top: 10%; /* Adjust to fit on smaller screens */
-        left: 50%;
+        left: 20%;
         transform: translateX(-50%);
-        width: 90%; /* Responsive width */
-        max-width: 400px; /* Set a max width for larger screens */
+        width: 30%; /* Responsive width */
+        max-width: 200px; /* Set a max width for larger screens */
         background: rgba(0, 0, 0, 0.8); /* Semi-transparent black background */
         color: white;
         padding: 20px 20px 15px; /* Adjust padding to accommodate close button */
@@ -51,7 +51,7 @@
       #close-button {
         position: absolute;
         top: -30px;
-        right: 10px;
+        right: -15px;
         background: none;
         border: none;
         color: white;
@@ -67,6 +67,7 @@
       /* Make sure text size adjusts for small screens */
       #message-box p {
         font-size: 1rem; /* Default for regular screens */
+        text-align: justify;
       }
 
       /* Media query for smaller screens */
@@ -180,6 +181,27 @@
       </a-entity>
     </a-scene>
 
+    <!--Scene for the fifth .mind file-->
+    <a-scene
+      id="scene5"
+      mindar-image="imageTargetSrc: ./targets5.mind; autoStart: true; showStats: false;"
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights"
+      embedded
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: true"
+    >
+      <a-assets>
+        <a-asset-item id="model5" src="./models/ELE5.glb"></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <a-entity mindar-image-target="targetIndex: 0" id="target5">
+        <a-entity gltf-model="#model5" position="0 0 0"></a-entity>
+      </a-entity>
+    </a-scene>
+
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         // Get references to all scenes
@@ -187,6 +209,7 @@
         const scene2 = document.getElementById("scene2");
         const scene3 = document.getElementById("scene3");
         const scene4 = document.getElementById("scene4");
+        const scene5 = document.getElementById("scene5");
 
         // Show the first scene initially
         scene1.classList.add("active");
@@ -231,9 +254,24 @@
           window.location.href = "model4.html"; // Navigate to the fourth page
         });
 
+        target4.addEventListener("targetLost", () => {
+          console.log("Target 4 lost!");
+        });
+
+        // Target 5 (Scene 5) event listeners
+        const target5 = document.getElementById("target5");
+        target5.addEventListener("targetFound", () => {
+          console.log("Target 5 found! Navigating to yet another page...");
+          window.location.href = "model5.html"; // Navigate to the fifth page
+        });
+
+        target5.addEventListener("targetLost", () => {
+          console.log("Target 5 lost!");
+        });
+
         // Logic to switch between scenes dynamically
         const switchToScene = (sceneToShow) => {
-          [scene1, scene2, scene3, scene4].forEach((scene) =>
+          [scene1, scene2, scene3, scene4, scene5].forEach((scene) =>
             scene.classList.remove("active")
           );
           sceneToShow.classList.add("active");

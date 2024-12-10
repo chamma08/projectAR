@@ -202,6 +202,7 @@ class App {
       2: { x: 0.01, y: 0.01, z: 0.01 }, // Scale for ELE2.glb
       3: { x: 0.06, y: 0.06, z: 0.06 }, // Scale for ELE3.glb
       4: { x: 0.03, y: 0.03, z: 0.03 },
+      5: { x: 0.3, y: 0.3, z: 0.3 },
       // Add more configurations as needed
     };
 
