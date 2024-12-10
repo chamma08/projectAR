@@ -206,45 +206,43 @@ class App {
 
   showChair(id) {
     this.initAR();
-  
+
     const loader = new GLTFLoader().setPath(this.assetsPath);
     const self = this;
-  
+
     this.loadingBar.visible = true;
-  
+
     // Scale configuration map
     const scaleConfig = {
-      1: { x: 5, y: 5, z: 5 }, // Scale for ELE1.glb
-      2: { x: 0.01, y: 0.01, z: 0.01 }, // Scale for ELE2.glb
-      3: { x: 0.06, y: 0.06, z: 0.06 }, // Scale for ELE3.glb
+      1: { x: 5, y: 5, z: 5 },
+      2: { x: 0.01, y: 0.01, z: 0.01 },
+      3: { x: 0.06, y: 0.06, z: 0.06 },
       4: { x: 0.03, y: 0.03, z: 0.03 },
       5: { x: 0.3, y: 0.3, z: 0.3 },
-      // Add more configurations as needed
     };
-  
+
     // Description configuration map
     const descriptionConfig = {
       1: "A majestic symbol of our natural heritage, towering up to 10 feet and weighing over 5000kg.",
       2: "A smaller but elegant representation of the mighty elephant.",
       3: "A detailed artistic interpretation of an elephant in miniature.",
-      // Add descriptions for other IDs as needed
     };
-  
+
     loader.load(
       `ELE${id}.glb`,
       function (gltf) {
         self.scene.add(gltf.scene);
         self.chair = gltf.scene;
-  
+
         // Apply scale based on configuration
-        const scale = scaleConfig[id] || { x: 1, y: 1, z: 1 }; // Default scale if not in config
+        const scale = scaleConfig[id] || { x: 1, y: 1, z: 1 };
         self.chair.scale.set(scale.x, scale.y, scale.z);
-  
+
         self.chair.visible = false;
-  
+
         // Set the current model ID
         self.currentModelId = id;
-  
+
         // Set up animation
         if (gltf.animations && gltf.animations.length > 0) {
           self.mixer = new THREE.AnimationMixer(gltf.scene);
@@ -252,13 +250,14 @@ class App {
             self.mixer.clipAction(clip).play();
           });
         }
-  
+
         self.loadingBar.visible = false;
-  
-        // Show description for the loaded model
-        const description = descriptionConfig[id] || "A stunning 3D model of an elephant.";
-        window.app.showDescription(description);
-  
+
+        // Show description for the placed model
+        const description =
+          descriptionConfig[id] || "A stunning 3D model of an elephant.";
+        self.displayDescription(description);
+
         // Start animation loop
         self.renderer.setAnimationLoop(self.render.bind(self));
       },
@@ -270,7 +269,18 @@ class App {
       }
     );
   }
-  
+
+  // Display description in AR view
+  displayDescription(text) {
+    const descriptionBox = document.getElementById("description-box");
+    descriptionBox.style.display = "block";
+    descriptionBox.innerText = text;
+
+    // Optional: Hide the description after 10 seconds
+    setTimeout(() => {
+      descriptionBox.style.display = "none";
+    }, 10000);
+  }
 
   initAR() {
     let currentSession = null;
