@@ -15,9 +15,10 @@ class App {
 
     this.assetsPath = "../../assets/ar-shop/";
 
+    // Camera setup
     this.camera = new THREE.PerspectiveCamera(
       70,
-      window.innerWidth / window.innerHeight,
+      window.innerWidth / (window.innerHeight * 0.7), // Adjusted aspect ratio for reduced height
       0.01,
       20
     );
@@ -29,18 +30,18 @@ class App {
     ambient.position.set(0.5, 1, 0.25);
     this.scene.add(ambient);
 
-    // Adjust WebGLRenderer size for 80% height
+    // Renderer setup
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     this.renderer.setPixelRatio(window.devicePixelRatio);
-    this.renderer.setSize(window.innerWidth, window.innerHeight * 0.8); // Use 80% height
+    this.renderer.setSize(window.innerWidth, window.innerHeight * 0.7); // Set 70% of screen height
     this.renderer.outputEncoding = THREE.sRGBEncoding;
-    this.renderer.domElement.style.margin = "0 auto"; // Center renderer
     container.appendChild(this.renderer.domElement);
 
     this.clock = new THREE.Clock();
 
     this.setEnvironment();
 
+    // Reticle setup
     this.reticle = new THREE.Mesh(
       new THREE.RingBufferGeometry(0.15, 0.2, 32).rotateX(-Math.PI / 2),
       new THREE.MeshBasicMaterial()
@@ -58,7 +59,7 @@ class App {
 
     window.addEventListener("resize", this.resize.bind(this));
 
-    // Touch event listeners
+    /*  // Touch event listeners
     this.renderer.domElement.addEventListener(
       "touchstart",
       this.onTouchStart.bind(this),
@@ -69,24 +70,23 @@ class App {
       this.onTouchEnd.bind(this),
       false
     );
-
-    // Add description container below the renderer
+ */
+    // Description container
     this.descriptionContainer = document.createElement("div");
     this.descriptionContainer.id = "ar-description";
     this.descriptionContainer.style.position = "absolute";
-    this.descriptionContainer.style.bottom = "10px";
-    this.descriptionContainer.style.left = "50%";
-    this.descriptionContainer.style.transform = "translateX(-50%)";
-    this.descriptionContainer.style.width = "90%";
-    this.descriptionContainer.style.backgroundColor = "rgba(0, 0, 0, 0.6)";
+    this.descriptionContainer.style.bottom = "10px"; // Align to bottom of free space
+    this.descriptionContainer.style.left = "0";
+    this.descriptionContainer.style.width = "100%";
+    this.descriptionContainer.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
     this.descriptionContainer.style.color = "white";
-    this.descriptionContainer.style.padding = "15px";
-    this.descriptionContainer.style.borderRadius = "8px";
-    this.descriptionContainer.style.fontFamily = "Arial, sans-serif";
-    this.descriptionContainer.style.fontSize = "14px";
+    this.descriptionContainer.style.padding = "10px 20px";
     this.descriptionContainer.style.textAlign = "center";
-    this.descriptionContainer.style.zIndex = "1000"; // Ensure it's above the renderer
-    this.descriptionContainer.innerText = ""; // Initially empty
+    this.descriptionContainer.style.fontFamily = "Arial, sans-serif";
+    this.descriptionContainer.style.fontSize = "15px";
+    this.descriptionContainer.style.zIndex = "1000";
+    this.descriptionContainer.innerText =
+      "Place an AR object to see its details";
     document.body.appendChild(this.descriptionContainer);
   }
 
@@ -204,9 +204,9 @@ class App {
   }
 
   resize() {
-    this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.aspect = window.innerWidth / (window.innerHeight * 0.7);
     this.camera.updateProjectionMatrix();
-    this.renderer.setSize(window.innerWidth, window.innerHeight * 0.8);
+    this.renderer.setSize(window.innerWidth, window.innerHeight * 0.7);
   }
 
   setEnvironment() {
