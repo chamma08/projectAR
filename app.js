@@ -15,10 +15,9 @@ class App {
 
     this.assetsPath = "../../assets/ar-shop/";
 
-    // Camera setup
     this.camera = new THREE.PerspectiveCamera(
       70,
-      window.innerWidth / (window.innerHeight * 0.7), // Adjusted aspect ratio for reduced height
+      window.innerWidth / window.innerHeight,
       0.01,
       20
     );
@@ -30,10 +29,9 @@ class App {
     ambient.position.set(0.5, 1, 0.25);
     this.scene.add(ambient);
 
-    // Renderer setup
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     this.renderer.setPixelRatio(window.devicePixelRatio);
-    this.renderer.setSize(window.innerWidth, window.innerHeight * 0.7); // Set 70% of screen height
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.outputEncoding = THREE.sRGBEncoding;
     container.appendChild(this.renderer.domElement);
 
@@ -41,7 +39,6 @@ class App {
 
     this.setEnvironment();
 
-    // Reticle setup
     this.reticle = new THREE.Mesh(
       new THREE.RingBufferGeometry(0.15, 0.2, 32).rotateX(-Math.PI / 2),
       new THREE.MeshBasicMaterial()
@@ -59,35 +56,18 @@ class App {
 
     window.addEventListener("resize", this.resize.bind(this));
 
-    /*  // Touch event listeners
-    this.renderer.domElement.addEventListener(
-      "touchstart",
-      this.onTouchStart.bind(this),
-      false
-    );
-    this.renderer.domElement.addEventListener(
-      "touchend",
-      this.onTouchEnd.bind(this),
-      false
-    );
- */
-    // Description container
-    this.descriptionContainer = document.createElement("div");
-    this.descriptionContainer.id = "ar-description";
-    this.descriptionContainer.style.position = "absolute";
-    this.descriptionContainer.style.bottom = "10px"; // Align to bottom of free space
-    this.descriptionContainer.style.left = "0";
-    this.descriptionContainer.style.width = "100%";
-    this.descriptionContainer.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
-    this.descriptionContainer.style.color = "white";
-    this.descriptionContainer.style.padding = "10px 20px";
-    this.descriptionContainer.style.textAlign = "center";
-    this.descriptionContainer.style.fontFamily = "Arial, sans-serif";
-    this.descriptionContainer.style.fontSize = "15px";
-    this.descriptionContainer.style.zIndex = "1000";
-    this.descriptionContainer.innerText =
-      "Place an AR object to see its details";
-    document.body.appendChild(this.descriptionContainer);
+    this.arInterface = document.getElementById("ar-interface");
+    this.backButton = document.getElementById("back-button");
+    this.modelDescription = document.getElementById("model-description");
+
+    // Ensure back button and description are hidden initially
+    this.backButton.style.display = "none";
+    this.modelDescription.parentElement.style.display = "none";
+
+    // Event Listener for Back Button
+    this.backButton.addEventListener("click", () => {
+      this.exitAR();
+    });
   }
 
   setupXR() {
@@ -102,12 +82,6 @@ class App {
           });
         }
       });
-
-      // Ensure AR description stays visible
-      const description = document.getElementById("ar-description");
-      if (description) {
-        description.style.display = "block";
-      }
     }
 
     const self = this;
@@ -121,22 +95,6 @@ class App {
       if (self.reticle.visible) {
         self.chair.position.setFromMatrixPosition(self.reticle.matrix);
         self.chair.visible = true;
-
-        //description for each model
-
-        self.descriptionContainer.style.display = "block";
-
-        const descriptions = {
-          1: "The Sri Lankan elephant (Elephas maximus maximus) is an endangered subspecies, with its population having declined nearly 65% over the past century. These majestic creatures, found in tropical forests, can grow up to 10 feet tall and weigh as much as 5,440 kg. Sampath Bank has supported the Wildlife and Nature Protection Society for over 30 years, contributing Rs. 5 for every new Debit Card issued to help protect Sri Lanka’s natural heritage..",
-          2: "This is a model of ELE2.",
-          3: "This is a model of ELE3.",
-          4: "This is a model of ELE4.",
-          // Add more descriptions as needed
-        };
-        self.descriptionContainer.innerText =
-          descriptions[self.currentModelId] || "AR Model Placed";
-
-        console.log(descriptions[self.currentModelId]);
 
         // Sound mapping for models
         const soundMap = {
@@ -204,9 +162,9 @@ class App {
   }
 
   resize() {
-    this.camera.aspect = window.innerWidth / (window.innerHeight * 0.7);
+    this.camera.aspect = window.innerWidth / window.innerHeight;
     this.camera.updateProjectionMatrix();
-    this.renderer.setSize(window.innerWidth, window.innerHeight * 0.7);
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 
   setEnvironment() {
@@ -239,14 +197,12 @@ class App {
 
     this.loadingBar.visible = true;
 
-    // Scale configuration map
     const scaleConfig = {
-      1: { x: 5, y: 5, z: 5 }, // Scale for ELE1.glb
-      2: { x: 0.01, y: 0.01, z: 0.01 }, // Scale for ELE2.glb
-      3: { x: 0.06, y: 0.06, z: 0.06 }, // Scale for ELE3.glb
+      1: { x: 5, y: 5, z: 5 },
+      2: { x: 0.01, y: 0.01, z: 0.01 },
+      3: { x: 0.06, y: 0.06, z: 0.06 },
       4: { x: 0.03, y: 0.03, z: 0.03 },
       5: { x: 0.3, y: 0.3, z: 0.3 },
-      // Add more configurations as needed
     };
 
     loader.load(
@@ -255,19 +211,13 @@ class App {
         self.scene.add(gltf.scene);
         self.chair = gltf.scene;
 
-        // Apply scale based on configuration
-        const scale = scaleConfig[id] || { x: 1, y: 1, z: 1 }; // Default scale if not in config
+        const scale = scaleConfig[id] || { x: 1, y: 1, z: 1 };
         self.chair.scale.set(scale.x, scale.y, scale.z);
 
         self.chair.visible = false;
 
-        // Make the description visible for the placed object
-        self.descriptionContainer.style.display = "block";
-
-        // Set the current model ID
         self.currentModelId = id;
 
-        // Set up animation
         if (gltf.animations && gltf.animations.length > 0) {
           self.mixer = new THREE.AnimationMixer(gltf.scene);
           gltf.animations.forEach((clip) => {
@@ -277,7 +227,6 @@ class App {
 
         self.loadingBar.visible = false;
 
-        // Start animation loop
         self.renderer.setAnimationLoop(self.render.bind(self));
       },
       function (xhr) {
@@ -287,6 +236,21 @@ class App {
         console.log("An error happened while loading the model:", error);
       }
     );
+
+    this.arInterface.classList.remove("hidden");
+
+    // Delay showing back button and description
+    setTimeout(() => {
+      const modelDescriptions = {
+        1: "You are placing an Elephant model.",
+        2: "You are placing a Chair model.",
+        3: "You are placing a Table model.",
+      };
+      this.modelDescription.textContent =
+        modelDescriptions[id] || "Placing your model...";
+      this.backButton.style.display = "block";
+      this.modelDescription.parentElement.style.display = "block";
+    }, 500); // Delay of 500ms to ensure camera is ready
   }
 
   initAR() {
@@ -301,9 +265,6 @@ class App {
       self.renderer.xr.setReferenceSpaceType("local");
       self.renderer.xr.setSession(session);
 
-      // Show the description container
-      self.descriptionContainer.style.display = "block";
-
       currentSession = session;
     }
 
@@ -311,9 +272,6 @@ class App {
       currentSession.removeEventListener("end", onSessionEnded);
 
       currentSession = null;
-
-      // Hide the description container
-      self.descriptionContainer.style.display = "none";
 
       if (self.chair !== null) {
         self.scene.remove(self.chair);
@@ -391,6 +349,23 @@ class App {
 
     this.renderer.render(this.scene, this.camera);
     this.controls.update();
+  }
+  exitAR() {
+    if (this.renderer.xr.getSession()) {
+      this.renderer.xr.getSession().end();
+    }
+
+    this.arInterface.classList.add("hidden");
+
+    this.backButton.style.display = "none";
+    this.modelDescription.parentElement.style.display = "none";
+
+    if (this.chair) {
+      this.scene.remove(this.chair);
+      this.chair = null;
+    }
+
+    this.renderer.setAnimationLoop(null);
   }
 }
 
