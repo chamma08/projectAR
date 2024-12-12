@@ -74,14 +74,14 @@ class App {
     this.descriptionContainer.style.bottom = "20px"; // Position at the bottom
     this.descriptionContainer.style.left = "50%";
     this.descriptionContainer.style.transform = "translateX(-50%)";
-    this.descriptionContainer.style.backgroundColor = "rgba(0, 0, 0, 0.5)"; // Transparent background
+    this.descriptionContainer.style.backgroundColor = "rgba(0, 0, 0, 0.1)"; // Transparent background
     this.descriptionContainer.style.color = "white";
     this.descriptionContainer.style.padding = "10px 20px";
     this.descriptionContainer.style.borderRadius = "10px";
     this.descriptionContainer.style.fontFamily = "Arial, sans-serif";
-    this.descriptionContainer.style.fontSize = "16px";
+    this.descriptionContainer.style.fontSize = "10px";
     this.descriptionContainer.style.textAlign = "center";
-    this.descriptionContainer.style.zIndex = "1000"; // Ensure it's above the camera view
+    this.descriptionContainer.style.zIndex = "10000000"; // Ensure it's above the camera view
     this.descriptionContainer.innerText = ""; // Initially empty
     document.body.appendChild(this.descriptionContainer);
   }
@@ -121,7 +121,7 @@ class App {
         //description for each model
 
         const descriptions = {
-          1: "This is a model of ELE1.",
+          1: "The Sri Lankan elephant (Elephas maximus maximus) is an endangered subspecies, with its population having declined nearly 65% over the past century. These majestic creatures, found in tropical forests, can grow up to 10 feet tall and weigh as much as 5,440 kg. Sampath Bank has supported the Wildlife and Nature Protection Society for over 30 years, contributing Rs. 5 for every new Debit Card issued to help protect Sri Lanka’s natural heritage..",
           2: "This is a model of ELE2.",
           3: "This is a model of ELE3.",
           4: "This is a model of ELE4.",
@@ -129,6 +129,8 @@ class App {
         };
         self.descriptionContainer.innerText =
           descriptions[self.currentModelId] || "AR Model Placed";
+
+        console.log(descriptions[self.currentModelId]);
 
         // Sound mapping for models
         const soundMap = {
