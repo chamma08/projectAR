@@ -70,6 +70,7 @@ class App {
 
     this.descriptionContainer = document.createElement("div");
     this.descriptionContainer.id = "ar-description";
+    this.descriptionContainer.style.display = "none";
     this.descriptionContainer.style.position = "absolute";
     this.descriptionContainer.style.bottom = "240px"; // Position at the bottom
     this.descriptionContainer.style.left = "50%";
@@ -78,7 +79,7 @@ class App {
     this.descriptionContainer.style.backgroundColor = "rgba(0, 0, 0, 0.1)"; // Transparent background
     this.descriptionContainer.style.color = "white";
     this.descriptionContainer.style.padding = "10px 20px";
-   this.descriptionContainer.style.width = "60%";
+    this.descriptionContainer.style.width = "60%";
     this.descriptionContainer.style.height = "auto";
     this.descriptionContainer.style.borderRadius = "10px";
     this.descriptionContainer.style.fontFamily = "Arial, sans-serif";
@@ -121,6 +122,8 @@ class App {
         self.chair.visible = true;
 
         //description for each model
+
+        self.descriptionContainer.style.display = "block";
 
         const descriptions = {
           1: "The Sri Lankan elephant (Elephas maximus maximus) is an endangered subspecies, with its population having declined nearly 65% over the past century. These majestic creatures, found in tropical forests, can grow up to 10 feet tall and weigh as much as 5,440 kg. Sampath Bank has supported the Wildlife and Nature Protection Society for over 30 years, contributing Rs. 5 for every new Debit Card issued to help protect Sri Lanka’s natural heritage..",
@@ -256,6 +259,9 @@ class App {
         self.chair.scale.set(scale.x, scale.y, scale.z);
 
         self.chair.visible = false;
+
+        // Make the description visible for the placed object
+        self.descriptionContainer.style.display = "block";
 
         // Set the current model ID
         self.currentModelId = id;
