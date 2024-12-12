@@ -74,16 +74,16 @@ class App {
     this.descriptionContainer.style.bottom = "200px"; // Position at the bottom
     this.descriptionContainer.style.left = "50%";
     this.descriptionContainer.style.transform = "translateX(-50%)";
+    this.descriptionContainer.style.zIndex = "10000000";
     this.descriptionContainer.style.backgroundColor = "rgba(0, 0, 0, 0.1)"; // Transparent background
     this.descriptionContainer.style.color = "white";
     this.descriptionContainer.style.padding = "10px 20px";
-    this.descriptionContainer.style.width = "140px";
+    this.descriptionContainer.style.width = "90%";
     this.descriptionContainer.style.height = "auto";
     this.descriptionContainer.style.borderRadius = "10px";
     this.descriptionContainer.style.fontFamily = "Arial, sans-serif";
-    this.descriptionContainer.style.fontSize = "3px";
+    this.descriptionContainer.style.fontSize = "clamp(12px, 2.5vw, 16px)";
     this.descriptionContainer.style.textAlign = "center";
-    this.descriptionContainer.style.zIndex = "10000000"; // Ensure it's above the camera view
     this.descriptionContainer.innerText = ""; // Initially empty
     document.body.appendChild(this.descriptionContainer);
   }
