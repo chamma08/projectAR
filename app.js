@@ -29,10 +29,12 @@ class App {
     ambient.position.set(0.5, 1, 0.25);
     this.scene.add(ambient);
 
+    // Adjust WebGLRenderer size for 80% height
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     this.renderer.setPixelRatio(window.devicePixelRatio);
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.renderer.setSize(window.innerWidth, window.innerHeight * 0.8); // Use 80% height
     this.renderer.outputEncoding = THREE.sRGBEncoding;
+    this.renderer.domElement.style.margin = "0 auto"; // Center renderer
     container.appendChild(this.renderer.domElement);
 
     this.clock = new THREE.Clock();
@@ -68,23 +70,22 @@ class App {
       false
     );
 
+    // Add description container below the renderer
     this.descriptionContainer = document.createElement("div");
     this.descriptionContainer.id = "ar-description";
-    this.descriptionContainer.style.display = "none";
     this.descriptionContainer.style.position = "absolute";
-    this.descriptionContainer.style.bottom = "240px"; // Position at the bottom
+    this.descriptionContainer.style.bottom = "10px";
     this.descriptionContainer.style.left = "50%";
     this.descriptionContainer.style.transform = "translateX(-50%)";
-    this.descriptionContainer.style.zIndex = "100000000000000000000"; // Ensure it's above the camera view
-    this.descriptionContainer.style.backgroundColor = "rgba(0, 0, 0, 0.1)"; // Transparent background
+    this.descriptionContainer.style.width = "90%";
+    this.descriptionContainer.style.backgroundColor = "rgba(0, 0, 0, 0.6)";
     this.descriptionContainer.style.color = "white";
-    this.descriptionContainer.style.padding = "10px 20px";
-    this.descriptionContainer.style.width = "60%";
-    this.descriptionContainer.style.height = "auto";
-    this.descriptionContainer.style.borderRadius = "10px";
+    this.descriptionContainer.style.padding = "15px";
+    this.descriptionContainer.style.borderRadius = "8px";
     this.descriptionContainer.style.fontFamily = "Arial, sans-serif";
-    this.descriptionContainer.style.fontSize = "15px";
+    this.descriptionContainer.style.fontSize = "14px";
     this.descriptionContainer.style.textAlign = "center";
+    this.descriptionContainer.style.zIndex = "1000"; // Ensure it's above the renderer
     this.descriptionContainer.innerText = ""; // Initially empty
     document.body.appendChild(this.descriptionContainer);
   }
@@ -205,7 +206,7 @@ class App {
   resize() {
     this.camera.aspect = window.innerWidth / window.innerHeight;
     this.camera.updateProjectionMatrix();
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.renderer.setSize(window.innerWidth, window.innerHeight * 0.8);
   }
 
   setEnvironment() {
