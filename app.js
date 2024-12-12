@@ -67,6 +67,23 @@ class App {
       this.onTouchEnd.bind(this),
       false
     );
+
+    this.descriptionContainer = document.createElement("div");
+    this.descriptionContainer.id = "ar-description";
+    this.descriptionContainer.style.position = "absolute";
+    this.descriptionContainer.style.bottom = "20px"; // Position at the bottom
+    this.descriptionContainer.style.left = "50%";
+    this.descriptionContainer.style.transform = "translateX(-50%)";
+    this.descriptionContainer.style.backgroundColor = "rgba(0, 0, 0, 0.5)"; // Transparent background
+    this.descriptionContainer.style.color = "white";
+    this.descriptionContainer.style.padding = "10px 20px";
+    this.descriptionContainer.style.borderRadius = "10px";
+    this.descriptionContainer.style.fontFamily = "Arial, sans-serif";
+    this.descriptionContainer.style.fontSize = "16px";
+    this.descriptionContainer.style.textAlign = "center";
+    this.descriptionContainer.style.zIndex = "1000"; // Ensure it's above the camera view
+    this.descriptionContainer.innerText = ""; // Initially empty
+    document.body.appendChild(this.descriptionContainer);
   }
 
   setupXR() {
@@ -100,6 +117,18 @@ class App {
       if (self.reticle.visible) {
         self.chair.position.setFromMatrixPosition(self.reticle.matrix);
         self.chair.visible = true;
+
+        //description for each model
+
+        const descriptions = {
+          1: "This is a model of ELE1.",
+          2: "This is a model of ELE2.",
+          3: "This is a model of ELE3.",
+          4: "This is a model of ELE4.",
+          // Add more descriptions as needed
+        };
+        self.descriptionContainer.innerText =
+          descriptions[self.currentModelId] || "AR Model Placed";
 
         // Sound mapping for models
         const soundMap = {
@@ -212,15 +241,6 @@ class App {
       // Add more configurations as needed
     };
 
-    // Description map for models
-    const descriptionMap = {
-      1: "This is an elephant model, perfect for wildlife-themed AR experiences.",
-      2: "This is a small scale building model ideal for architecture AR demos.",
-      3: "This is a furniture model showcasing modern design in AR.",
-      4: "This is a toy car model, perfect for kids' AR entertainment.",
-      5: "This is a plant model, great for AR gardening apps.",
-    };
-
     loader.load(
       `ELE${id}.glb`,
       function (gltf) {
@@ -235,38 +255,6 @@ class App {
 
         // Set the current model ID
         self.currentModelId = id;
-
-        const description = descriptionMap[id] || "No description available.";
-
-        // Update the DOM element
-        const descElement = document.getElementById("ar-description-text");
-        const descContainer = document.getElementById("ar-description");
-
-        if (descElement && descContainer) {
-          descElement.textContent = description;
-          descContainer.style.display = "block";
-          descContainer.style.zIndex = 1000;
-        }
-
-        // Keep description visible during AR session
-        function ensureDescriptionVisibility() {
-          if (descContainer) {
-            descContainer.style.display = "block";
-            descContainer.style.zIndex = 1000;
-          }
-        }
-
-        // Set up interval to enforce visibility
-        self.checkDescriptionInterval = setInterval(() => {
-          ensureDescriptionVisibility();
-        }, 1000);
-
-        // Clear the interval when AR session ends
-        if (self.renderer && self.renderer.xr) {
-          self.renderer.xr.addEventListener("sessionend", () => {
-            clearInterval(self.checkDescriptionInterval);
-          });
-        }
 
         // Set up animation
         if (gltf.animations && gltf.animations.length > 0) {
@@ -302,12 +290,10 @@ class App {
       self.renderer.xr.setReferenceSpaceType("local");
       self.renderer.xr.setSession(session);
 
-      currentSession = session;
+      // Show the description container
+      self.descriptionContainer.style.display = "block";
 
-      const descriptionContainer = document.getElementById("ar-description");
-      if (descriptionContainer) {
-        descriptionContainer.style.display = "block"; // Make sure it's visible
-      }
+      currentSession = session;
     }
 
     function onSessionEnded() {
@@ -315,18 +301,15 @@ class App {
 
       currentSession = null;
 
+      // Hide the description container
+      self.descriptionContainer.style.display = "none";
+
       if (self.chair !== null) {
         self.scene.remove(self.chair);
         self.chair = null;
       }
 
       self.renderer.setAnimationLoop(null);
-
-      // Hide the AR description
-      const descContainer = document.getElementById("ar-description");
-      if (descContainer) {
-        descContainer.style.display = "none";
-      }
     }
 
     if (currentSession === null) {
