@@ -74,7 +74,7 @@ class App {
     this.descriptionContainer.style.bottom = "240px"; // Position at the bottom
     this.descriptionContainer.style.left = "50%";
     this.descriptionContainer.style.transform = "translateX(-50%)";
-    this.descriptionContainer.style.zIndex = "100000000"; // Ensure it's above the camera view
+    this.descriptionContainer.style.zIndex = "100000000000000000000"; // Ensure it's above the camera view
     this.descriptionContainer.style.backgroundColor = "rgba(0, 0, 0, 0.1)"; // Transparent background
     this.descriptionContainer.style.color = "white";
     this.descriptionContainer.style.padding = "10px 20px";
