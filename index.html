@@ -31,11 +31,11 @@
       }
 
       #message-box {
-        /* position: fixed; */
+        position: fixed;
         top: 10%; /* Adjust to fit on smaller screens */
-        left: 25%;
-        width: 80%;
-        align-items: center;
+  
+
+        width: 50%; /* Responsive width */
         background: rgba(0, 0, 0, 0.8); /* Semi-transparent black background */
         color: white;
         padding: 20px 20px 15px; /* Adjust padding to accommodate close button */
@@ -75,8 +75,18 @@
 
       /* Media query for smaller screens */
       @media screen and (max-width: 600px) {
+        #message-box {
+          top: 5%; /* Adjust top margin for smaller screens */
+          width: 95%; /* Increase width for small screens */
+          padding: 15px 15px 10px; /* Adjust padding */
+        }
+
         #message-box p {
-          font-size: 1rem; /* Slightly smaller text on small screens */
+          font-size: 0.9rem; /* Smaller text size for small screens */
+        }
+
+        #close-button {
+          font-size: 18px; /* Slightly smaller close button */
         }
       }
     </style>
@@ -197,12 +207,6 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        // Close button event listener
-        document
-          .getElementById("close-button")
-          .addEventListener("click", () => {
-            document.getElementById("message-box").style.display = "none";
-          });
         // Get references to all scenes
         const scene1 = document.getElementById("scene1");
         const scene2 = document.getElementById("scene2");
@@ -286,6 +290,10 @@
           console.log("Switching to Scene 3");
           switchToScene(scene3);
         }, 10000);
+      });
+
+      document.getElementById("close-button").addEventListener("click", () => {
+        document.getElementById("message-box").style.display = "none";
       });
     </script>
   </body>
