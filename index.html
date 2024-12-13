@@ -34,7 +34,7 @@
         position: fixed;
         top: 10%; /* Adjust to fit on smaller screens */
   
-
+        margin-left: 13px;
         width: 50%; /* Responsive width */
         background: rgba(0, 0, 0, 0.8); /* Semi-transparent black background */
         color: white;
@@ -43,7 +43,6 @@
         z-index: 1000;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         word-wrap: break-word; /* Ensure text wraps */
-        margin-left: 25px;
         margin-top: 20px;
       }
 
@@ -70,14 +69,14 @@
       /* Make sure text size adjusts for small screens */
       #message-box p {
         font-size: 1rem; /* Default for regular screens */
-        text-align: justify;
+        width: 370px;
       }
 
       /* Media query for smaller screens */
       @media screen and (max-width: 600px) {
         #message-box {
           top: 5%; /* Adjust top margin for smaller screens */
-          width: 95%; /* Increase width for small screens */
+          width: 340px; /* Increase width for small screens */
           padding: 15px 15px 10px; /* Adjust padding */
         }
 
