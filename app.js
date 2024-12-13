@@ -55,19 +55,6 @@ class App {
     this.setupXR();
 
     window.addEventListener("resize", this.resize.bind(this));
-
-    this.arInterface = document.getElementById("ar-interface");
-    this.backButton = document.getElementById("back-button");
-    this.modelDescription = document.getElementById("model-description");
-
-    // Ensure back button and description are hidden initially
-    this.backButton.style.display = "none";
-    this.modelDescription.parentElement.style.display = "none";
-
-    // Event Listener for Back Button
-    this.backButton.addEventListener("click", () => {
-      this.exitAR();
-    });
   }
 
   setupXR() {
@@ -239,18 +226,6 @@ class App {
 
     this.arInterface.classList.remove("hidden");
 
-    // Delay showing back button and description
-    setTimeout(() => {
-      const modelDescriptions = {
-        1: "You are placing an Elephant model.",
-        2: "You are placing a Chair model.",
-        3: "You are placing a Table model.",
-      };
-      this.modelDescription.textContent =
-        modelDescriptions[id] || "Placing your model...";
-      this.backButton.style.display = "block";
-      this.modelDescription.parentElement.style.display = "block";
-    }, 500); // Delay of 500ms to ensure camera is ready
   }
 
   initAR() {
@@ -349,23 +324,6 @@ class App {
 
     this.renderer.render(this.scene, this.camera);
     this.controls.update();
-  }
-  exitAR() {
-    if (this.renderer.xr.getSession()) {
-      this.renderer.xr.getSession().end();
-    }
-
-    this.arInterface.classList.add("hidden");
-
-    this.backButton.style.display = "none";
-    this.modelDescription.parentElement.style.display = "none";
-
-    if (this.chair) {
-      this.scene.remove(this.chair);
-      this.chair = null;
-    }
-
-    this.renderer.setAnimationLoop(null);
   }
 }
 

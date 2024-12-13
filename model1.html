@@ -41,52 +41,6 @@
     <title>AR Tracking and Place</title>
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-    <style>
-      #ar-interface {
-        display: flex; /* Change to flex since hidden class will handle visibility */
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(
-          0,
-          0,
-          0,
-          0.2
-        ); /* Semi-transparent to show AR underneath */
-        justify-content: center;
-        align-items: center;
-        z-index: 9999; /* High z-index to ensure it overlays everything */
-        pointer-events: none; /* Allow interactions with AR scene unless explicitly set otherwise */
-      }
-
-      #back-button {
-        position: absolute;
-        top: 16px;
-        left: 16px;
-        z-index: 10000; /* Higher z-index to ensure visibility */
-        background: rgba(0, 0, 0, 0.7);
-        color: white;
-        padding: 8px 16px;
-        border-radius: 8px;
-        font-size: 14px;
-        pointer-events: auto; /* Allow button to be clickable */
-      }
-
-      #overlay-description {
-        position: absolute;
-        bottom: 20px;
-        left: 20px;
-        background: rgba(0, 0, 0, 0.8);
-        color: white;
-        padding: 10px 20px;
-        border-radius: 8px;
-        font-size: 16px;
-        z-index: 10000; /* Ensure it's visible above AR */
-        pointer-events: none;
-      }
-    </style>
   </head>
 
   <body class="bg-white text-gray-900">
@@ -110,23 +64,6 @@
         </button>
       </div>
     </header>
-
-    <div id="ar-interface" class="hidden">
-      <button
-        id="back-button"
-        class="absolute top-4 left-4 p-2 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition z-50"
-      >
-        <i class="bx bx-arrow-back"></i> Back
-      </button>
-    
-      <div
-        id="overlay-description"
-        class="absolute bottom-4 left-4 bg-black bg-opacity-50 text-white p-4 rounded-lg shadow-lg z-50"
-      >
-        <p id="model-description">Placing your model...</p>
-      </div>
-    </div>
-    
 
     <section class="p-4">
       <button
