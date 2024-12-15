@@ -203,6 +203,88 @@
         <a-entity gltf-model="#model5" position="0 0 0"></a-entity>
       </a-entity>
     </a-scene>
+    
+    <!--Scene for the sixeth .mind file-->
+    <a-scene
+      id="scene6"
+      mindar-image="imageTargetSrc: ./targets6.mind; autoStart: true; showStats: false;"
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights"
+      embedded
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: true"
+    >
+      <a-assets>
+        <a-asset-item id="model5" src="./models/ELE5.glb"></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <a-entity mindar-image-target="targetIndex: 0" id="target6">
+        <a-entity gltf-model="#model5" position="0 0 0"></a-entity>
+      </a-entity>
+    </a-scene>
+
+    <!--Scene for the fifth .mind file-->
+    <a-scene
+      id="scene5"
+      mindar-image="imageTargetSrc: ./targets5.mind; autoStart: true; showStats: false;"
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights"
+      embedded
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: true"
+    >
+      <a-assets>
+        <a-asset-item id="model5" src="./models/ELE5.glb"></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <a-entity mindar-image-target="targetIndex: 0" id="target5">
+        <a-entity gltf-model="#model5" position="0 0 0"></a-entity>
+      </a-entity>
+    </a-scene>
+    <!--Scene for the fifth .mind file-->
+    <a-scene
+      id="scene5"
+      mindar-image="imageTargetSrc: ./targets5.mind; autoStart: true; showStats: false;"
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights"
+      embedded
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: true"
+    >
+      <a-assets>
+        <a-asset-item id="model5" src="./models/ELE5.glb"></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <a-entity mindar-image-target="targetIndex: 0" id="target5">
+        <a-entity gltf-model="#model5" position="0 0 0"></a-entity>
+      </a-entity>
+    </a-scene>
+    <!--Scene for the fifth .mind file-->
+    <a-scene
+      id="scene5"
+      mindar-image="imageTargetSrc: ./targets5.mind; autoStart: true; showStats: false;"
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights"
+      embedded
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: true"
+    >
+      <a-assets>
+        <a-asset-item id="model5" src="./models/ELE5.glb"></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <a-entity mindar-image-target="targetIndex: 0" id="target5">
+        <a-entity gltf-model="#model5" position="0 0 0"></a-entity>
+      </a-entity>
+    </a-scene>
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
@@ -212,6 +294,7 @@
         const scene3 = document.getElementById("scene3");
         const scene4 = document.getElementById("scene4");
         const scene5 = document.getElementById("scene5");
+        const scene6 = document.getElementById("scene6");
 
         // Show the first scene initially
         scene1.classList.add("active");
@@ -271,9 +354,20 @@
           console.log("Target 5 lost!");
         });
 
+        // Target 6 (Scene 6) event listeners
+        const target6 = document.getElementById("target6");
+        target6.addEventListener("targetFound", () => {
+          console.log("Target 6 found! Navigating to yet another page...");
+          window.location.href = "model6.html"; // Navigate to the sixth page
+        });
+
+        target6.addEventListener("targetLost", () => {
+          console.log("Target 6 lost!");
+        });
+
         // Logic to switch between scenes dynamically
         const switchToScene = (sceneToShow) => {
-          [scene1, scene2, scene3, scene4, scene5].forEach((scene) =>
+          [scene1, scene2, scene3, scene4, scene5, scene6].forEach((scene) =>
             scene.classList.remove("active")
           );
           sceneToShow.classList.add("active");
